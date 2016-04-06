@@ -1,7 +1,5 @@
-#include "filemanager.h"
+#include "XmlManager.h"
 
 namespace ak {
-	FileManager::FileManager() {
-	}
 }
 

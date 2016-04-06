@@ -1,7 +1,8 @@
 set( SOURCES
-	FileManager.cpp
-	XmlManager.cpp
-	BaseCmd.cpp
+      BaseCmd.cpp
+      FileManager.cpp
+      ProgramOptionsBase.cpp
+      XmlManager.cpp
 )
 
 add_library( akcore ${SOURCES} )
