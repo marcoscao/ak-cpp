@@ -1,7 +1,7 @@
 #ifndef AK_CREATE_XML_CMD__
 #define AK_CREATE_XML_CMD__
 
-#include "core/BaseCmd.h"
+#include "ak_core/BaseCmd.h"
 
 namespace ak {
 

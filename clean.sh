@@ -26,6 +26,8 @@ rm -f core/CMakeCache
 rm -f core/Makefile
 
 
+rm -rf out
+mkdir out
 
 
 
