@@ -1,6 +1,14 @@
+# avoid warning message about definition of Win32 into cygwin
+# it must be at the top or cmake_ required version greater than 2.8.4
+
+set( CMAKE_LEGACY_CYGWIN_WIN32 0 )
+
+
+
 cmake_minimum_required( VERSION 2.8 )
 
 project(ak)
+
 
 # clang
 SET( CMAKE_CXX_COMPILER "g++" )
@@ -20,8 +28,19 @@ find_package( boost )
 include_directories( ${Boost_INCLUDE_DIR} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
-message( "boost include dirs: ${Boost_INCLUDE_DIR}" )
-message( "boost library dirs: ${Boost_LIBRARY_DIRS}" )
+
+if( Boost_PROGRAM_OPTIONS_FOUND )
+	message( "* ak: found boost program_options" )
+	set(AK_BOOST_PROGRAM_OPTIONS_LIB_DEBUG ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})
+elseif()
+	message( "***** ak: Oops! Not found component program_options" )
+endif()
+
+
+message( "* ak: boost include dirs: ${Boost_INCLUDE_DIR}" )
+message( "* ak: boost library dirs: ${Boost_LIBRARY_DIRS}" )
+message( "* ak: boost program_options debug lib name: ${AK_BOOST_PROGRAM_OPTIONS_LIB_DEBUG}" )
+
 
 add_subdirectory( ak_core )
 add_subdirectory( ak_generate )
