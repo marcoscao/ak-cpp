@@ -8,37 +8,47 @@ namespace po = boost::program_options;
 namespace ak {
 
    PO::PO( )
-   :  bpo_desc_( "Options" ),
+   :  bpo_desc_( "Available Options" ),
       bpo_positional_(),
       bpo_vm_()
    {
    }
 
-   void PO::add_options( option_def_list const & v, option_def_list const & v_positional )
+   // void PO::add_options( option_def_list const & v, option_def_list const & v_positional )
+   // {
+   //    // po::options_description desc("Options");
+   //    //     desc.add_options()
+   //    //       ("help,h", "Print help messages")
+   //    //       ("verbose,v", "print words with verbosity")
+   //    //       ("word,w", po::value<std::vector<std::string> >(&sentence),
+   //    //        "words for the sentence, specify multiple times")
+   //    //       (",t", "just a temp option that does very little")
+   //    //       ("necessary,n", po::value<std::string>()->required(), "necessary!")
+   //    //       ("manual,m", po::value<std::string>(), "extract value manually")
+   //    //       ("add", po::value<int>(&add)->required(), "additional options")
+   //    //       ("like", po::value<int>(&like)->required(), "this");
+   //
+   //    for( auto i : v ) 
+   //       bpo_desc_.add_options()( get<0>(i).c_str(), get<1>(i).c_str() );
+   //
+   //    // po::positional_options_description positionalOptions;
+   //    // positionalOptions.add("add", 1);
+   //    // positionalOptions.add("like", 1);
+   //    
+   //    //for( auto i : v_positional )
+   //     //  bpo_positional_.add( get<0>(i).c_str(), 1 );
+   // }
+
+   void PO::add_group( string const & title, option_def_list const & v )
    {
-      // po::options_description desc("Options");
-      //     desc.add_options()
-      //       ("help,h", "Print help messages")
-      //       ("verbose,v", "print words with verbosity")
-      //       ("word,w", po::value<std::vector<std::string> >(&sentence),
-      //        "words for the sentence, specify multiple times")
-      //       (",t", "just a temp option that does very little")
-      //       ("necessary,n", po::value<std::string>()->required(), "necessary!")
-      //       ("manual,m", po::value<std::string>(), "extract value manually")
-      //       ("add", po::value<int>(&add)->required(), "additional options")
-      //       ("like", po::value<int>(&like)->required(), "this");
+	   	po::options_description d( title.c_str() );
 
-      for( auto i : v ) 
-         bpo_desc_.add_options()( get<0>(i).c_str(), get<1>(i).c_str() );
-   
-      // po::positional_options_description positionalOptions;
-      // positionalOptions.add("add", 1);
-      // positionalOptions.add("like", 1);
-      
-      for( auto i : v_positional )
-         bpo_positional_.add( get<0>(i).c_str(), 1 );
+		for( auto i : v ) 
+        	d.add_options()( get<0>(i).c_str(), get<1>(i).c_str() );
+	   
+	   bpo_desc_.add( d );
+
    }
-
    void PO::process_command_line( int argc, char** argv )
    {
       try {
@@ -68,10 +78,21 @@ namespace ak {
       return bpo_vm_.count( op_name );
    } 
 
+   bool PO::no_user_option( ) const
+   {
+      return bpo_vm_.empty();
+   } 
+
    std::string PO::option_value( std::string const & op_name ) const
    {
       return bpo_vm_[ op_name ].as<string>();
    }
+
+	void PO::print_usage( std::string const & title ) const
+	{	
+		cout << title << "  usage " << endl;
+		cout << bpo_desc_ << endl;
+	}
 
 }
 

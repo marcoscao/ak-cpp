@@ -4,7 +4,6 @@
 set( CMAKE_LEGACY_CYGWIN_WIN32 0 )
 
 
-
 cmake_minimum_required( VERSION 2.8 )
 
 project(ak)
@@ -22,24 +21,27 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-#find_package( boost COMPONENTS program_options REQUIRED )
-find_package( boost )
+find_package( boost REQUIRED COMPONENTS program_options )
+#find_package( boost )
 
 include_directories( ${Boost_INCLUDE_DIR} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 
-if( Boost_PROGRAM_OPTIONS_FOUND )
-	message( "* ak: found boost program_options" )
-	set(AK_BOOST_PROGRAM_OPTIONS_LIB_DEBUG ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})
-elseif()
-	message( "***** ak: Oops! Not found component program_options" )
+
+if( ${CYGWIN} )
+	set(AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options" )
+endif()
+
+if( ${APPLE} )
+	set( AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options-mt" )
 endif()
 
 
 message( "* ak: boost include dirs: ${Boost_INCLUDE_DIR}" )
 message( "* ak: boost library dirs: ${Boost_LIBRARY_DIRS}" )
-message( "* ak: boost program_options debug lib name: ${AK_BOOST_PROGRAM_OPTIONS_LIB_DEBUG}" )
+message( "* ak: boost program_options found: ${Boost_PROGRAM_OPTIONS_FOUND}" )
+message( "* ak: AK_BOOST_PROGRAM_OPTIONS_LIB : ${AK_BOOST_PROGRAM_OPTIONS_LIB}" )
 
 
 add_subdirectory( ak_core )
