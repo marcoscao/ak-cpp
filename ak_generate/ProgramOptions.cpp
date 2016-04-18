@@ -3,8 +3,6 @@
 
 namespace ak {
 
-   void ProgramOptions::help() {
-   }
 
 }
 

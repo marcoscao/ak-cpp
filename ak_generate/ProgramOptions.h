@@ -7,7 +7,6 @@ namespace ak {
    public:		
       ProgramOptions() = default;
 
-      void help();
 
    };
 

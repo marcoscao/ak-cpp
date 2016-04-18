@@ -7,11 +7,19 @@ namespace po = boost::program_options;
 
 namespace ak {
 
-   PO::PO( )
-   :  bpo_desc_( "Available Options" ),
+   PO::PO()//string const & title, int argc, char** argv )
+   :  //argc_( argc ),
+      //argv_( argv ),
+      //title_( title ),
+      bpo_desc_( "Available Options" ),
       bpo_positional_(),
       bpo_vm_()
    {
+   }
+
+   PO::~PO()
+   {
+      //! TODO: Clean created options ?
    }
 
    // void PO::add_options( option_def_list const & v, option_def_list const & v_positional )
@@ -41,37 +49,25 @@ namespace ak {
 
    void PO::add_group( string const & title, option_def_list const & v )
    {
-	   	po::options_description d( title.c_str() );
+      po::options_description d( title.c_str() );
 
-		for( auto i : v ) 
-        	d.add_options()( get<0>(i).c_str(), get<1>(i).c_str() );
-	   
-	   bpo_desc_.add( d );
+      for( auto i : v ) 
+         if( get<2>(i.data_) ) {
+            //cout << get<0>(i.data_) << " is alive" << endl;
+            d.add_options()( get<0>(i.data_).c_str(), get<2>(i.data_), get<1>(i.data_).c_str() );
+         }
+         else {
+            //cout << get<0>(i.data_) << " has NULL data" << endl;
+            d.add_options()( get<0>(i.data_).c_str(), get<1>(i.data_).c_str() );
+       
+         }
 
+      bpo_desc_.add( d );
+
+      // re-process command line arguments with new passed group
+      //process_arguments_();
    }
-   void PO::process_command_line( int argc, char** argv )
-   {
-      try {
-         // could throw
-         po::store( po::command_line_parser( argc, argv )
-                     .options( bpo_desc_ )
-                     .positional( bpo_positional_ ).run(),
-                     bpo_vm_ ); 
 
-         // throws on error
-         po::notify( bpo_vm_ ); 
-      } 
-      catch( po::required_option & e ) { 
-         cout << "Oops! program options required option exception" << endl;
-         cerr << e.what() << std::endl << std::endl; 
-         throw; 
-      } 
-      catch( po::error & e ) { 
-         cout << "Oops! program options required option exception" << endl;
-         cerr << e.what() << std::endl << std::endl; 
-         throw; 
-      } 
-   }
 
    bool PO::has_option( std::string const & op_name ) const
    {
@@ -83,17 +79,51 @@ namespace ak {
       return bpo_vm_.empty();
    } 
 
-   std::string PO::option_value( std::string const & op_name ) const
+   // std::string PO::option_value( std::string const & op_name ) const
+   // {
+   //    return bpo_vm_[ op_name ].as<string>();
+   // }
+
+  void PO::print_usage( std::string const & title ) const
+  {	
+    cout << title << "  usage " << endl;
+    cout << bpo_desc_ << endl;
+  }
+
+   //void PO::process_command_line( int argc, char** argv )
+   void PO::process_command_line_arguments( int argc, char** argv )
    {
-      return bpo_vm_[ op_name ].as<string>();
+      try {
+         // could throw
+         po::store(  po::command_line_parser( argc, argv )
+                     .options( bpo_desc_ ) .positional( bpo_positional_ ).run(),
+                     bpo_vm_ ); 
+
+         // just in case correct usage check if user asks for help
+         if( bpo_vm_.count("help" ) ) {
+            print_usage( "" );
+            exit(0);
+         }
+
+         // throws on error
+         po::notify( bpo_vm_ ); 
+      } 
+      catch( po::required_option & e ) { 
+         cout << endl << "Error! Not found some of the required options. Please run again using --help to show available options" << endl;
+         cerr << e.what() << std::endl << std::endl; 
+         abort();
+      } 
+      catch( po::error & e ) { 
+         cout << endl << "Error! Something wrong. Please run again using --help to show available options" << endl;
+         cerr << e.what() << std::endl << std::endl; 
+         abort();
+      } 
+      catch( exception & e ) { 
+         cout << endl << "Oops! stl exception" << endl;
+         cerr << e.what() << std::endl << std::endl; 
+         abort();
+      } 
    }
-
-	void PO::print_usage( std::string const & title ) const
-	{	
-		cout << title << "  usage " << endl;
-		cout << bpo_desc_ << endl;
-	}
-
 }
 
 
