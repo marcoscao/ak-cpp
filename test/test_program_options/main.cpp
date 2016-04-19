@@ -10,107 +10,99 @@ class TestProgramOptions : public PO {
 public:
    
    TestProgramOptions() 
-   :  dry_run_( false ) {
-   
-   }
+   :rate_(),
+   	freq_(), 
+	submode_(),
+	mode_(),
+   	sources_(),
+	devices_(),
+	positionals_() {
 
-   void process_the_options()
-   {
-      process_config_file();
-      process_sources();
-      process_dry_run();
-
-      if( has_option("-a") )
-         cout << "* option -a found " << endl;
-
-      if( has_option("-b") )
-         cout << "* option -b found with value: " << option_value<double>("-b") << endl;
-
-      if( has_option("-c") )
-         cout << "* option -c found with value: " << option_value<double>("-c") << endl;
-
-      if( has_option("-d") ) {
-         cout << "* option -d found with managed value: " << option_value<double>("-d") << endl;
-         cout << "* option -d found with user managed value: " << rate_ << endl;
-      }
-   }
-
-   void process_sources() 
-   {
-      if( has_option( "source" ) ) {
-         cout << "* source option found: " << endl;
-         for( auto i : sources_ )
-            cout << "  - passed source: " << i << endl;
-      }
-   }
-
-   void process_dry_run()
-   {
-      if( has_option( "dry-run" ) ) {
-         cout << "* dry-run mode found: " << endl;
-         cout << "  value: " << option_value<int>("dry-run" ) << endl;
-      }
-   }
-
-   void process_config_file()
-   {
-      if( has_option("config-file") ) {
-         cout << "* config-file option found: " << endl;
-         cout << "  value: " << option_value<string>( "config-file" ) << endl;
-      }
    }
 
    void initialize()
    {
-      option_def_list l{ 
+		// Optional options with no associated value ( they are like a boolean type, TRUE when the option has been passed )
+		add_group( "Optional Flags Options Group", option_def_list { 
+	
+         	option_def{ "help", "help command" }, 
 
-         // optional option with no associated value 
-         //   is like a boolean type, if has_option("help") returns true means this option was passed
-         option_def{ "help", "help command" }, 
+			// adding shorthand to the option
+			// no callback function assigned in this case
+         	option_def{ "dry-run", "doing the operation in simulation mode, with no side effects" },
 
-         // optional option with also shorthand
-         option_def{ "verbose,v", "doing the operation in verbose way" },
+         	// only shorthand
+			// again with no callback
+         	option_def{ ",v", "optinally activate verbose mode" }
+			}
+		);
 
-         // optional option with only shorthand
-         option_def{ ",a", "optinally activate flag a" },
-         
-         // optional option with only shorthand
-         // in this case we use "-a" to access its value, ex: option_value<double>( "-a" )
-         option_def{ "freq,b", "sets the frequency", set_optional<double>() },
 
-         option_def{ "threshold,c", "sets the threadshold. By default the value is 2.5", set_optional<double>( 2.5 ) },
+		// Required options which also has an associated value, either managed automatically or by the user
+		add_group( "Required Options", option_def_list { 
 
-         option_def{ "rate,d", "establish desired rate", set_optional<double>( &rate_ ) },
+			// required and automatically managed
+			option_def{ "mode", "required main mode number", set_unique_required<double>(), 
+				std::bind( &TestProgramOptions::process_mode_op_, this ) },
 
-         option_def{ "mode,e", "required main mode number", set_required<double>() },
+			// required managed also by the user
+			// no callback
+			option_def{ "submode", "required submode number", set_unique_required<double>( &submode_ ) },
 
-         option_def{ "submode,f", "required submode number", set_required<double>( &submode_ ) },
+			// required multiple and managed also by the user
+			option_def{ "device", "required one or many devices ids", set_multiple_required<string>( &devices_ ),
+				std::bind( &TestProgramOptions::process_device_op_, this ) },
+      		}
+		);
+
+
+		// Miscelanean options
+		add_group( "Miscelaneaum Options Group", option_def_list { 
+
+			// optional unique and automatically managed
+         	option_def{ "freq,b", "sets the frequency", set_unique<double>(),  
+				std::bind( &TestProgramOptions::process_freq_op_, this ) },
+
+			// optional unique with default value
+         	option_def{ "threshold,c", "sets the threadshold. By default the value is 2.5", set_unique<double>( 2.5 ),
+				std::bind( &TestProgramOptions::process_threshold_op_, this ) },
+
+			// optional unique managed by the user with default value
+         	option_def{ "rate", "establish desired rate", set_unique<double>( &rate_, 23.45 ),
+				std::bind( &TestProgramOptions::process_rate_op_, this ) },
         
-         option_def{ "source,g", "sets multiples sources, note that can be added many sources", set_multiple< string >( &sources_ ) },
+			// multiple managed by the user
+         	option_def{ "source,g", "sets multiples sources, note that can be added many sources", set_multiple< string >( &sources_ ),
+				std::bind( &TestProgramOptions::process_source_op_, this ) },
+				
+			// multiple managed by the user
+         	option_def{ "songs,w", "sets multiples positionals songs", set_multiple< string >( &positionals_ ),
+				std::bind( &TestProgramOptions::process_positionals_op_, this ) },
 
-         option_def{ "metadata,h", "sets multiples metadatas, note that can be added many sources", set_multiple< string >( &sources_ ) },
+			// multiple managed automatically
+         	option_def{ "metadata,h", "sets multiples metadatas, note that can be added many sources", set_multiple< string >(),
+				std::bind( &TestProgramOptions::process_metadata_op_, this ) },
 
-         // set_multiple_op< string >( &my_multiple, true );  // multiple and required
+         	// set_positional_op< string >( &my_pos_1, 1 );
+         	// set_positional_op< std::vector<string> >( &my_pos_various, 3 );
+      		}
+		);
 
-         // set_positional_op< string >( &my_pos_1, 1 );
-         // set_positional_op< std::vector<string> >( &my_pos_various, 3 );
-
-      };
-
-      add_group( "One Options Group", l );
-
-      // PO::option_def_list l2{ 
-      //       PO::option_def{ "xtra-mode", "extra mode command", set_value<int>( OptionType::OPTIONAL, &mode_ ) },
-      //       PO::option_def{ "xtra-help", "extra help command"},
-      //  	    PO::option_def{ "xv", "extra verbose operation", nullptr },
-      // // 	PO::option_def{ "xsource", "source" },
-      // // 	PO::option_def{ "xtarget,p", "target" },
-      //  	    PO::option_def{ "xtra-dry-run", "extra dry-run mode", nullptr }
-      // };
-      // //
-      // add_group( "Real Live Options", l2 );
-
+		add_positional( "songs" );
    }
+
+   void process_no_callbacks()
+   {
+      if( has_option( "-v" ) ) 
+         cout << "* 'verbose' option found" << endl;
+
+      if( has_option( "dry-run" ) ) 
+         cout << "* 'dry-run' option found" << endl;
+
+      if( has_option( "submode" ) ) 
+         cout << "* required option 'submode' found with value: " << option_value<double>("submode" ) << endl;
+   }
+
 
 private:
    double rate_;
@@ -119,6 +111,64 @@ private:
    bool dry_run_;
    int mode_;
    vector<string> sources_;
+   vector<string> devices_;
+   vector<string> positionals_;
+
+   
+
+   void process_help_op_()
+   {
+		print_usage( "testing_program_options" );
+	}
+
+   void process_mode_op_()
+   {
+		cout << "!!! Great automatically called by the engine" << endl;
+        cout << "* required option 'mode' found with value: " << option_value<double>("mode" ) << endl;
+   }
+
+   void process_device_op_() 
+   {
+        cout << "* required multiple 'device' option found with values: " << endl;
+        for( auto i : devices_ )
+            cout << "  - device: " << i << endl;
+   }
+
+   void process_freq_op_()
+   {
+         cout << "* 'freq' option found with value: " << option_value<double>("freq" ) << endl;
+  }
+
+   void process_threshold_op_()
+   {
+         cout << "* 'threshold' option found with value: " << option_value<double>("threshold" ) << endl;
+   }
+
+   void process_rate_op_()
+   {
+         cout << "* 'rate' option found with value: " << option_value<double>("rate" ) << endl;
+   }
+
+   void process_source_op_() 
+   {
+         cout << "*multiple 'source' option found with values: " << endl;
+         for( auto i : devices_ )
+            cout << "  - source: " << i << endl;
+   }
+
+   void process_positionals_op_() 
+   {
+         cout << "* positionals 'songs' option found with values: " << endl;
+         for( auto i : positionals_ )
+            cout << "  - song: " << i << endl;
+   }
+
+   void process_metadata_op_() 
+   {
+         cout << "* multiple 'metadata' option found with values: " << endl;
+         //for( auto i : metadata_ )
+          //  cout << "  - metadata: " << i << endl;
+   }
 
 };
 
@@ -126,28 +176,16 @@ private:
 
 int main(int argc, char** argv )
 {
-   //cout << "Testing program_options..." << endl;
    
    TestProgramOptions tpo;
 
+   // Sets the options groups
    tpo.initialize();
 
-   // verify/check passed options
-   tpo.process_command_line_arguments( argc, argv );
-   
+   // This iterate over available options calling those with callbacks
+   tpo.execute( argc, argv );
 
-
-   if( tpo.has_option( "help" ) || tpo.no_user_option() ) 
-          tpo.print_usage( "testing_program_options" );
-
-   if( tpo.has_option( "verbose" ) ) {
-          cout << "........" << endl;
-          cout << "... doing verbose....." << endl;
-          cout << "........" << endl;
-   }
-
-
-   tpo.process_the_options();
-		
+   // process all those options we do not register with callbacks
+   tpo.process_no_callbacks();
 }
 

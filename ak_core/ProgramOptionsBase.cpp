@@ -7,13 +7,11 @@ namespace po = boost::program_options;
 
 namespace ak {
 
-   PO::PO()//string const & title, int argc, char** argv )
-   :  //argc_( argc ),
-      //argv_( argv ),
-      //title_( title ),
-      bpo_desc_( "Available Options" ),
+   PO::PO()
+   :  bpo_desc_( "Available Options" ),
       bpo_positional_(),
-      bpo_vm_()
+      bpo_vm_(),
+	  options_callbacks_()
    {
    }
 
@@ -22,6 +20,23 @@ namespace ak {
       //! TODO: Clean created options ?
    }
 
+	void PO::execute( int argc, char** argv )
+	{
+   		// verify/check passed options
+   		process_command_line_arguments( argc, argv );
+
+		// iterate over known options to call callbacks
+		for( auto it = begin( options_callbacks_ ); it != end( options_callbacks_); ++it ) {
+			if( has_option( it->first ) ) {
+				//cout << "core:: found option " << it->first << endl; 
+				if( it->second ) {
+					//cout << "core:: launching callback " << it->first << endl; 
+					it->second();
+				}
+			}
+		}
+	}
+		
    // void PO::add_options( option_def_list const & v, option_def_list const & v_positional )
    // {
    //    // po::options_description desc("Options");
@@ -51,7 +66,11 @@ namespace ak {
    {
       po::options_description d( title.c_str() );
 
-      for( auto i : v ) 
+      for( auto i : v ) {
+
+		 // insert each option for internal management purposes
+		 options_callbacks_.insert( std::make_pair( get<0>(i.data_), get<3>(i.data_) ) );
+
          if( get<2>(i.data_) ) {
             //cout << get<0>(i.data_) << " is alive" << endl;
             d.add_options()( get<0>(i.data_).c_str(), get<2>(i.data_), get<1>(i.data_).c_str() );
@@ -59,8 +78,9 @@ namespace ak {
          else {
             //cout << get<0>(i.data_) << " has NULL data" << endl;
             d.add_options()( get<0>(i.data_).c_str(), get<1>(i.data_).c_str() );
-       
          }
+
+	}
 
       bpo_desc_.add( d );
 
@@ -68,6 +88,20 @@ namespace ak {
       //process_arguments_();
    }
 
+   void PO::add_positional( string const & i )
+   {
+		auto it = options_callbacks_.find( i );
+		if( it != options_callbacks_.end() ) {
+			cout << "added option " << i << " as positional" << endl;
+			bpo_positional_.add( i.c_str(), 2 );
+		}
+   }
+
+   void PO::add_positional( std::vector< std::string > const & v )
+   {
+	   for( auto i : v ) 
+		   add_positional( i );
+   }
 
    bool PO::has_option( std::string const & op_name ) const
    {
@@ -124,6 +158,8 @@ namespace ak {
          abort();
       } 
    }
+
+
 }
 
 
