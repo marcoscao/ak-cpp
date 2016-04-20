@@ -22,12 +22,12 @@ public:
 
    void initialize()
    {
-		// Optional options with no associated value ( they are like a boolean type, TRUE when the option has been passed )
+      // Optional options with no associated value ( they are like a boolean type, TRUE when the option has been passed )
 		add_group( "Optional Flags Options Group", option_def_list { 
 	
          	option_def{ "help", "help command" }, 
 
-			// adding shorthand to the option
+               // adding shorthand to the option
 			// no callback function assigned in this case
          	option_def{ "dry-run", "doing the operation in simulation mode, with no side effects" },
 
@@ -44,10 +44,6 @@ public:
 			// required and automatically managed
 			option_def{ "mode", "required main mode number", set_unique_required<double>(), 
 				std::bind( &TestProgramOptions::process_mode_op_, this ) },
-
-			// required managed also by the user
-			// no callback
-			option_def{ "submode", "required submode number", set_unique_required<double>( &submode_ ) },
 
 			// required multiple and managed also by the user
 			option_def{ "device", "required one or many devices ids", set_multiple_required<string>( &devices_ ),
@@ -76,7 +72,7 @@ public:
 				std::bind( &TestProgramOptions::process_source_op_, this ) },
 				
 			// multiple managed by the user
-         	option_def{ "songs,w", "sets multiples positionals songs", set_multiple< string >( &positionals_ ),
+         	option_def{ "songs,w", "sets multiples positionals songs", set_unique< vector<string> >( &positionals_ ),
 				std::bind( &TestProgramOptions::process_positionals_op_, this ) },
 
 			// multiple managed automatically
@@ -99,8 +95,6 @@ public:
       if( has_option( "dry-run" ) ) 
          cout << "* 'dry-run' option found" << endl;
 
-      if( has_option( "submode" ) ) 
-         cout << "* required option 'submode' found with value: " << option_value<double>("submode" ) << endl;
    }
 
 
