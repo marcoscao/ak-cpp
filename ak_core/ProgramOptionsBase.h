@@ -120,7 +120,8 @@ namespace ak {
 
       void add_group( std::string const & title, option_def_list const & v );
 
-   	  void add_positional( std::string const & option_name );
+		// Unlimited ocurrences by default
+   	  void add_positional( std::string const & option_name, int num_ocurrences = -1 );
    	
 	  void add_positional( std::vector< std::string > const & option_names );
 

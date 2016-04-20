@@ -36,7 +36,6 @@ namespace ak {
       }
    }
 
-
    void PO::add_group( string const & title, option_def_list const & v )
    {
       po::options_description d( title.c_str() );
@@ -59,7 +58,7 @@ namespace ak {
       bpo_desc_.add( d );
    }
 
-   void PO::add_positional( string const & i, int num_ocurrences = -1 )
+   void PO::add_positional( string const & i, int num_ocurrences )
    {
 		auto it = options_callbacks_.find( i );
 		if( it != options_callbacks_.end() ) {
@@ -86,7 +85,7 @@ namespace ak {
 
    void PO::print_usage( std::string const & title ) const
    {	
-      cout << title << "  usage " << endl;
+      //cout << title << "  usage " << endl;
       cout << bpo_desc_ << endl;
    }
 
@@ -101,8 +100,12 @@ namespace ak {
 
          // just in case correct usage check if user asks for help
          if( bpo_vm_.count("help" ) ) {
-            print_usage( "" );
-            exit(0);
+      		// trigger user callback if it is possible
+			auto it = options_callbacks_.find( "help" );
+			if ( it != options_callbacks_.end() && it->second ) {
+				it->second();
+				exit(0);
+			}
          }
 
          // throws on error
