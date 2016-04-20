@@ -9,33 +9,33 @@
 namespace ak {
 namespace gen {
 
-	class ProgramOptions : public PO {
-	public:
+   class ProgramOptions : public PO {
+   public:
 		
-		using StrContainer = std::vector< std::string >;
+      using StrContainer = std::vector< std::string >;
+
+      ProgramOptions();
+
+      void initialize();
+
+      void process_no_callbacks();
 
 
-		ProgramOptions();
+   private:
+      StrContainer source_paths_;
 
-   		void initialize();
+      void process_help_op_();
 
-   		void process_no_callbacks();
+      void process_dry_run_op_();
+
+      void process_source_path_op_();
+
+      void traverse_source_path_( std::string const & sp );
+
+   };
 
 
-	private:
-   		StrContainer source_paths_;
-
-   
-   		void process_help_op_();
-
-   		void process_dry_run_op_();
-
-   		void process_source_path_op_();
-
-	};
-
-}
-}
+} }
 
 #endif
 

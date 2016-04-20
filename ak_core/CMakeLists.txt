@@ -1,7 +1,7 @@
 set( SOURCES
    BaseCmd.cpp
    Exception.cpp
-   FileManager.cpp
+   FileSystem.cpp
    ProgramOptionsBase.cpp
    XmlManager.cpp
 )

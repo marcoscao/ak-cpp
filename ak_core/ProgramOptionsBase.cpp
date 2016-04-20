@@ -1,5 +1,8 @@
 #include "ProgramOptionsBase.h"
+#include "Exception.h"
+
 #include <iostream>
+
 
 using namespace std;
 namespace po = boost::program_options;
@@ -112,19 +115,17 @@ namespace ak {
          po::notify( bpo_vm_ ); 
       } 
       catch( po::required_option & e ) { 
-         cout << endl << "Error! Not found some of the required options. Please run again using --help to show available options" << endl;
-         cerr << e.what() << std::endl << std::endl; 
-         abort();
+         string s = "Error! Not found some of the required options.\nPlease run again using --help to show available options.";
+         s += "\n\n" + string( e.what() ) + " \n"; 
+         throw ak_options_exception( s );
       } 
       catch( po::error & e ) { 
-         cout << endl << "Error! Something wrong. Please run again using --help to show available options" << endl;
-         cerr << e.what() << std::endl << std::endl; 
-         abort();
+         string s = "Error! Something wrong. \nPlease run again using --help to show available options";
+         s += "\n\n " + string( e.what() ) + " \n"; 
+         throw ak_options_exception( s );
       } 
       catch( exception & e ) { 
-         cout << endl << "Oops! stl exception" << endl;
-         cerr << e.what() << std::endl << std::endl; 
-         abort();
+         throw ak_options_exception( "Oops! something wrong with STL doing program options\n\n" + string( e.what() ) + " \n" );
       } 
    }
 

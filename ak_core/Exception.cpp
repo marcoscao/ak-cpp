@@ -4,15 +4,26 @@ using namespace std;
 
 namespace ak {
 
-   AkException::AkException( string const & msg )
+   ak_exception::ak_exception( string const & msg )
    : msg_( msg )
    {
    }
 
-   const char* AkException::what() const throw()
+   const char* ak_exception::what() const throw()
    {
-      return std::string( "ak_exception: " + msg_ ).c_str();
+      return string( msg_ ).c_str();
    }
+
+   ak_options_exception::ak_options_exception( string const & msg )
+   : ak_exception( msg )
+   {
+   }
+
+   ak_files_exception::ak_files_exception( string const & msg )
+   : ak_exception( msg )
+   {
+   }
+
 
 }
 
