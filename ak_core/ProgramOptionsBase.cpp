@@ -112,7 +112,7 @@ namespace ak {
                      bpo_vm_ ); 
 
          // just in case correct usage check if user asks for help
-         if( bpo_vm_.count("help" ) ) {
+         if( bpo_vm_.count("help" ) || bpo_vm_.empty() ) {
       	    // trigger user callback if it is possible
 	    auto it = option_invokers_.find( "help" );
 	    if ( it != option_invokers_.end() && it->second.first ) {

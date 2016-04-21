@@ -1,4 +1,5 @@
 #include "SourcePathCmd.h"
+#include "ProgramOptions.h"
 #include <iostream>
 
 using namespace std;
@@ -7,7 +8,6 @@ namespace ak {
 namespace gen {
 
    SourcePathCmd::SourcePathCmd( )
-   : source_paths_()
    {
    }
 

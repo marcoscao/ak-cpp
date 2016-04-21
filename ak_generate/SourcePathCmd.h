@@ -16,9 +16,15 @@ namespace gen {
 		
       virtual void execute( PO const & );
 
+      StrContainer & source_paths()
+      {
+         return source_paths_;
+      }
+
    private:
       StrContainer source_paths_;
-      
+
+
       void traverse_source_path_( std::string const & sp );
 
    };

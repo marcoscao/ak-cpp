@@ -11,8 +11,6 @@ namespace gen {
 
    class ProgramOptions : public PO {
    public:
-		
-      using StrContainer = std::vector< std::string >;
 
       ProgramOptions();
 
@@ -22,15 +20,13 @@ namespace gen {
 
 
    private:
-      StrContainer source_paths_;
 
       void help_op_callback_();
 
       void dry_run_op_callback_();
 
-      void source_path_op_callback_();
+      void version_op_callback_();
 
-      void traverse_source_path_( std::string const & sp );
 
    };
 

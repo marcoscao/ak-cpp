@@ -10,26 +10,30 @@ namespace ak {
 namespace gen {
 
    ProgramOptions::ProgramOptions() 
-   : source_paths_() 
    {
 
    }
 
    void ProgramOptions::initialize()
    {
+      std::shared_ptr< SourcePathCmd > src_p( new SourcePathCmd() ); 
+      
       // Basic and required  options
       add_group( "Basic Options", option_def_list { 
 				
-         // no callback assigned
          option_def{ "help", "help command", 
 		  nullptr,
 		  std::bind( &ProgramOptions::help_op_callback_, this ) },
+
+         option_def{ "version", "current version", 
+		  nullptr,
+		  std::bind( &ProgramOptions::version_op_callback_, this ) },
         
          // multiple managed by the user
          option_def{ "source-path,s", "sets the source paths to process files. Note that can be assigned multiple source paths", 
-		  set_multiple< string >( &source_paths_ ),
-		  std::bind( &ProgramOptions::source_path_op_callback_, this ),
-		  std::shared_ptr<Command>( new SourcePathCmd() ) }
+		  set_multiple< string >( &src_p->source_paths() ),
+		  nullptr,
+		  src_p }
           } 
       );
 
@@ -54,7 +58,8 @@ namespace gen {
    void ProgramOptions::help_op_callback_()
    {
       cout << "ak_generate " << endl;
-      cout << "version 2016.1.01";
+      version_op_callback_();
+
       cout << endl << endl;
       cout << "   usage  ak_generate -source_path [ --source_path ... ]"; 
       cout << endl << endl;
@@ -70,16 +75,10 @@ namespace gen {
       cout << "!!! Doing in dry-run mode" << endl;
    }
 
-   void ProgramOptions::source_path_op_callback_() 
+   void ProgramOptions::version_op_callback_()
    {
-      cout << "* doing source_path op. values: " << endl;
-
-      for( auto i : source_paths_ ) {
-
-         cout << "  - source_path : " << i << endl;
-         //traverse_source_path_( i );
-      }
-
+      cout << "Built April 2016" << endl; 
+      cout << "version  2016.04.001" << endl;
    }
 
 
