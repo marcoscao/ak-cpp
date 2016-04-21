@@ -3,6 +3,7 @@
 
 #include <boost/program_options.hpp>
 //#include <boost/filesystem.hpp>
+
 #include <functional>
 #include <map>
 #include <memory>
@@ -13,10 +14,13 @@
 
 namespace ak {
 
+	class Command;
+
    class PO {
    public:
 
       using empty_callback = std::function< void() >;
+      using empty_command = std::shared_ptr< Command >;
 
       //! stores ( "command", "desc", *value_semantic* ) tuple
       struct option_def {
@@ -25,13 +29,18 @@ namespace ak {
          option_def( std::string const & command, 
                      std::string const & desc, 
                      boost::program_options::value_semantic * value = nullptr,
-                     empty_callback callback_fn = empty_callback() )
-         :  data_( command, desc, value, callback_fn ) {
+                     empty_callback callback_fn = empty_callback(),
+					 std::shared_ptr< Command > cmd )
+         :  data_( command, desc, value, callback_fn, cmd ) {
          }
 
 
       private:
-         using option_def_tuple = std::tuple< std::string, std::string, boost::program_options::value_semantic*, empty_callback >;
+         using option_def_tuple = std::tuple< 	std::string, 
+			 									std::string, 
+			 			 						boost::program_options::value_semantic*, 
+												empty_callback,
+												std::shared_ptr< Command > >;
 
          option_def_tuple data_;
       };
@@ -107,7 +116,7 @@ namespace ak {
       static boost::program_options::value_semantic * set_multiple_required( std::vector<T> * user_var = nullptr )
       {
          auto v = set_value< std::vector<T> >( user_var );
-         return static_cast< boost::program_options::typed_value< std::vector<T> >* >(v)->required();
+         return static_cast< boost::program_options::typed_value<std::vector<T>>*>(v)->required();
       }
 
 
@@ -150,8 +159,47 @@ namespace ak {
 	  // stores all defined options, that does not mean the option is currently in po::vm since only will be if it was passed on the command line
 	  // and this set contains all the options defined on initialization
 	 std::map< std::string, empty_callback > options_callbacks_;
-      
-   };
+
+	 std::map< std::string, std::shared_ptr< Command > > options_commands_;
+   	
+ 	// splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
+	// boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
+	// which will be called as:  "-v", "verbose", "verbose"
+	//void mapping_option_callback_( option_def const & i );
+
+	//void mapping_option_command_( option_def const & i );
+
+
+
+	//! Passing Container and tuple index to read value from
+	//! Currently associate option with callback, and option with command in different containers
+	template< typename TC, int tuple_index >
+	void PO::mapping_option_( TC & ct, option_def const & op )
+	{
+		 // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
+		 // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
+		 // which will be called as:  "-v", "verbose", "verbose"
+		 
+		 string s = get<0>( op.data_ );
+
+		 size_t pos = s.find_first_of( "," );
+		 if( pos != string::npos ) {
+			 
+			// short way
+			//
+			ct.insert( std::make_pair( "-" + s.substr(pos+1,1), get< tuple_index >( op.data_ ) ) );
+			
+			if( pos ) {
+				// both large and short, so add the large way
+				options_callbacks_.insert( std::make_pair( s.substr(0, pos), get< tuple_index >( op.data_) ) );
+			}
+		 }
+		 else {
+			// it's a large option-name, store as it is
+			options_callbacks_.insert( std::make_pair( s, get< tuple_index >( op.data_ ) ) );
+		 }
+   }
+	};
 
 }
 

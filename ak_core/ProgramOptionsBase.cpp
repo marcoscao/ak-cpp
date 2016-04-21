@@ -27,14 +27,23 @@ namespace ak {
       // verify/check passed options
       process_command_line_arguments( argc, argv );
 
+
       // iterate over known options to call callbacks
       for( auto it = begin( options_callbacks_ ); it != end( options_callbacks_); ++it ) {
-         if( has_option( it->first ) ) {
+
+      	//cout << "core:: iterating over option name:  " << it->first << endl; 
+        
+		if( has_option( it->first ) ) {
             //cout << "core:: found option " << it->first << endl; 
-            if( it->second ) {
-               //cout << "core:: launching callback " << it->first << endl; 
-               it->second();
+            if( it->second.first ) {
+               cout << "core:: launching callback for option: " << it->first << endl; 
+               it->second.first();
             }
+
+			if( it->second.second ) {
+               cout << "core:: launching Command for option: " << it->first << endl; 
+				it->second.second->execute();
+			}
          }
       }
    }
@@ -45,8 +54,7 @@ namespace ak {
 
       for( auto i : v ) {
 
-         // insert each option for internal management purposes
-		 options_callbacks_.insert( std::make_pair( get<0>(i.data_), get<3>(i.data_) ) );
+		 mapping_option_callback_( i );
 
          if( get<2>(i.data_) ) {
             //cout << get<0>(i.data_) << " is alive" << endl;
@@ -129,6 +137,59 @@ namespace ak {
       } 
    }
 
+    void PO::mapping_option_invokers_( option_def const & op )
+    {
+	 	 // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
+	 	 // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
+	 	 // which will be called as:  "-v", "verbose", "verbose"
+	 	 
+	 	 string s = get< 0 >(i.data_);
+		 CallbackFn & c_fn = get< 3 >( op.data );
+		 CommandPtr & p_cmd = get< 4 >( op.data );
+   
+	 	 size_t pos = s.find_first_of( "," );
+	 	 if( pos != string::npos ) {
+	 		 
+	 		// short way
+	 		option_invokers_.insert( std::make_pair( "-" + s.substr(pos+1,1), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+	 		
+	 		if( pos ) {
+	 			// both large and short, so add the large way
+	 			option_invokers_.insert( std::make_pair( s.substr(0, pos), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+	 		}
+	 	 }
+	 	 else {
+	 		// it's a large option-name, store as it is
+	 		option_invokers_.insert( std::make_pair( s, make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+	 	 }
+    }
+	//
+   //
+   // void PO::mapping_option_command_( option_def const & i )
+   // {
+	// 	 // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
+	// 	 // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
+	// 	 // which will be called as:  "-v", "verbose", "verbose"
+	// 	 
+	// 	 string s = get<0>(i.data_);
+   //
+	// 	 size_t pos = s.find_first_of( "," );
+	// 	 if( pos != string::npos ) {
+	// 		 
+	// 		// short way
+	// 		options_commands_.insert( std::make_pair( "-" + s.substr(pos+1,1), get<4>(i.data_) ) );
+	// 		
+	// 		if( pos ) {
+	// 			// both large and short, so add the large way
+	// 			options_callbacks_.insert( std::make_pair( s.substr(0, pos), get<4>(i.data_) ) );
+	// 		}
+	// 	 }
+	// 	 else {
+	// 		// it's a large option-name, store as it is
+	// 		options_callbacks_.insert( std::make_pair( s, get<4>(i.data_) ) );
+	// 	 }
+   // }
+		 
 }
 
 

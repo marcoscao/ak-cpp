@@ -18,17 +18,17 @@ namespace gen {
 
       void initialize();
 
-      void process_no_callbacks();
+      void process_manually();
 
 
    private:
       StrContainer source_paths_;
 
-      void process_help_op_();
+      void help_op_callback_();
 
-      void process_dry_run_op_();
+      void dry_run_op_callback_();
 
-      void process_source_path_op_();
+      void source_path_op_callback_();
 
       void traverse_source_path_( std::string const & sp );
 
