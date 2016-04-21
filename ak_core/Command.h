@@ -3,23 +3,24 @@
 
 namespace ak {
 
-	//class Engine;
+   class PO;
 
-	class Command {
-	public:
-		//Command( Engine & );
-		Command( );
-		
-		virtual void execute() = 0;
+   class Command {
+   public:
+      //Command( Engine & );
+      Command();
+      ~Command();		
 
-		//Engine & engine();
+      virtual void execute( PO const & ) = 0;
 
-		//const Engine & engine() const;
+      //Engine & engine();
 
-	private:
-		//Engine & engine_;
+      //const Engine & engine() const;
 
-	};
+   private:
+      //Engine & engine_;
+
+   };
 
 }
 

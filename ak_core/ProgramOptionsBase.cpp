@@ -1,4 +1,5 @@
 #include "ProgramOptionsBase.h"
+#include "Command.h"
 #include "Exception.h"
 
 #include <iostream>
@@ -13,7 +14,7 @@ namespace ak {
    :  bpo_desc_( "Available Options" ),
       bpo_positional_(),
       bpo_vm_(),
-	  options_callbacks_()
+      option_invokers_()
    {
    }
 
@@ -29,21 +30,22 @@ namespace ak {
 
 
       // iterate over known options to call callbacks
-      for( auto it = begin( options_callbacks_ ); it != end( options_callbacks_); ++it ) {
+      for( auto it = begin( option_invokers_ ); it != end( option_invokers_); ++it ) {
 
       	//cout << "core:: iterating over option name:  " << it->first << endl; 
         
-		if( has_option( it->first ) ) {
+         if( has_option( it->first ) ) {
+
             //cout << "core:: found option " << it->first << endl; 
             if( it->second.first ) {
                cout << "core:: launching callback for option: " << it->first << endl; 
                it->second.first();
             }
 
-			if( it->second.second ) {
+	    if( it->second.second ) {
                cout << "core:: launching Command for option: " << it->first << endl; 
-				it->second.second->execute();
-			}
+	       it->second.second->execute( *this );
+	    }
          }
       }
    }
@@ -54,7 +56,7 @@ namespace ak {
 
       for( auto i : v ) {
 
-		 mapping_option_callback_( i );
+         mapping_option_invokers_( i );
 
          if( get<2>(i.data_) ) {
             //cout << get<0>(i.data_) << " is alive" << endl;
@@ -71,17 +73,17 @@ namespace ak {
 
    void PO::add_positional( string const & i, int num_ocurrences )
    {
-		auto it = options_callbacks_.find( i );
-		if( it != options_callbacks_.end() ) {
-			//cout << "added option " << i << " as positional" << endl;
-			bpo_positional_.add( i.c_str(), num_ocurrences );
-		}
+      auto it = option_invokers_.find( i );
+      if( it != option_invokers_.end() ) {
+         //cout << "added option " << i << " as positional" << endl;
+	 bpo_positional_.add( i.c_str(), num_ocurrences );
+      }
    }
 
    void PO::add_positional( std::vector< std::string > const & v )
    {
-	   for( auto i : v ) 
-		   add_positional( i );
+      for( auto i : v ) 
+         add_positional( i );
    }
 
    bool PO::has_option( std::string const & op_name ) const
@@ -111,12 +113,12 @@ namespace ak {
 
          // just in case correct usage check if user asks for help
          if( bpo_vm_.count("help" ) ) {
-      		// trigger user callback if it is possible
-			auto it = options_callbacks_.find( "help" );
-			if ( it != options_callbacks_.end() && it->second ) {
-				it->second();
-				exit(0);
-			}
+      	    // trigger user callback if it is possible
+	    auto it = option_invokers_.find( "help" );
+	    if ( it != option_invokers_.end() && it->second.first ) {
+	       it->second.first();
+	       exit(0);
+	    }
          }
 
          // throws on error
@@ -139,31 +141,33 @@ namespace ak {
 
     void PO::mapping_option_invokers_( option_def const & op )
     {
-	 	 // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
-	 	 // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
-	 	 // which will be called as:  "-v", "verbose", "verbose"
-	 	 
-	 	 string s = get< 0 >(i.data_);
-		 CallbackFn & c_fn = get< 3 >( op.data );
-		 CommandPtr & p_cmd = get< 4 >( op.data );
-   
-	 	 size_t pos = s.find_first_of( "," );
-	 	 if( pos != string::npos ) {
-	 		 
-	 		// short way
-	 		option_invokers_.insert( std::make_pair( "-" + s.substr(pos+1,1), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
-	 		
-	 		if( pos ) {
-	 			// both large and short, so add the large way
-	 			option_invokers_.insert( std::make_pair( s.substr(0, pos), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
-	 		}
-	 	 }
-	 	 else {
-	 		// it's a large option-name, store as it is
-	 		option_invokers_.insert( std::make_pair( s, make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
-	 	 }
+      // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
+      // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
+      // which will be called as:  "-v", "verbose", "verbose"
+        
+      string s = get< 0 >( op.data_ );
+      CallbackFn const & c_fn = get< 3 >( op.data_ );
+      CommandPtr const & p_cmd = get< 4 >( op.data_ );
+
+      size_t pos = s.find_first_of( "," );
+      if( pos != string::npos ) {
+                
+         // short way
+         option_invokers_.insert( std::make_pair( "-" + s.substr(pos+1,1), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+            
+         if( pos ) {
+            // both large and short, so add the large way
+            option_invokers_.insert( std::make_pair( s.substr(0, pos), make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+         }
+      }
+      else {
+         // it's a large option-name, store as it is
+         option_invokers_.insert( std::make_pair( s, make_pair( c_fn, p_cmd ) ) ); //get<3>(i.data_) ) );
+      }
     }
-	//
+
+    
+    //
    //
    // void PO::mapping_option_command_( option_def const & i )
    // {

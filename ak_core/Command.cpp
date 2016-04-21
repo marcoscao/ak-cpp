@@ -11,6 +11,11 @@ namespace ak {
 	{
 	}
 
+        Command::~Command()
+        {
+        }
+        
+
 	// const Engine & Command::engine() const 
 	// {
 	// 	return engine_;

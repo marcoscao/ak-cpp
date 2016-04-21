@@ -20,7 +20,7 @@ int main(int argc, char** argv ) {
       po.execute( argc, argv );
 
       // process all those options we do not register with callbacks
-      po.process_no_callbacks();
+      po.process_manually();
 
    }
    catch( ak::ak_options_exception const & e ) {

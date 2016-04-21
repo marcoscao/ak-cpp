@@ -1,29 +1,30 @@
-#include "Command.h"
+#include "SourcePathCmd.h"
+#include <iostream>
 
 using namespace std;
 
 namespace ak {
 namespace gen {
 
-	SourcePathCmd::SourcePathCmd( )
-	: source_paths_()
-	{
-	}
+   SourcePathCmd::SourcePathCmd( )
+   : source_paths_()
+   {
+   }
 
-	void SourcePathCmd::execute( )
-	{
-		cout << "Great! Executing SourcePath option command" << endl;
+   void SourcePathCmd::execute( PO const & po )
+   {
+      cout << "Great! Executing SourcePath option command" << endl;
 
       for( auto i : source_paths_ ) {
 
          cout << "  - source_path : " << i << endl;
          traverse_source_path_( i );
       }
-	}
+   }
 
    void SourcePathCmd::traverse_source_path_( std::string const & sp )
    {
-      FileSystem fm;
+      //FileSystem fm;
 	
       // if( fm.is_folder( sp ) == false ) {
       //    cout <<  "Oops! Item " << sp << " is not a folder" << endl;

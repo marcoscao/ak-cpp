@@ -1,5 +1,6 @@
 set( SOURCES
    BaseCmd.cpp
+   Command.cpp
    Exception.cpp
    FileSystem.cpp
    ProgramOptionsBase.cpp
