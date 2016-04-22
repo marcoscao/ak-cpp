@@ -1,13 +1,17 @@
 #include "ProgramOptions.h"
 #include "ak_core/Exception.h"
+#include "ak_core/LogSystem.h"
 
 #include <iostream>
 
 using namespace std;
+using namespace ak;
 using namespace ak::gen;
 
 
-int main(int argc, char** argv ) {
+int main(int argc, char** argv ) 
+{
+	ak_log( 0, "starting ak_generate" );
 
    ProgramOptions po;
 
@@ -33,5 +37,7 @@ int main(int argc, char** argv ) {
       cout << endl << e.what() << endl;
    }
 
+	int h = 9;
+	ak_log( 0, "end ak_generate", "with h=", h );
 }
 
