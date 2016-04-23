@@ -5,7 +5,7 @@ set( SOURCES
 	CreateXmlCmd.cpp
 	main.cpp
         ProgramOptions.cpp
-	SourcePathCmd.cpp
+	SourcesCmd.cpp
 )
 
 add_executable( ak_generate ${SOURCES} )

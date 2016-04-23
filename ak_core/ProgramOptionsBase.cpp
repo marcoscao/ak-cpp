@@ -166,34 +166,6 @@ namespace ak {
       }
     }
 
-    
-    //
-   //
-   // void PO::mapping_option_command_( option_def const & i )
-   // {
-	// 	 // splits "option_name" into ( large, short ) and store twice for internal purposes ( callbacks, etc... )
-	// 	 // boost user stores option as one of: ",v" ,  "verbose" or  "verbose,v"
-	// 	 // which will be called as:  "-v", "verbose", "verbose"
-	// 	 
-	// 	 string s = get<0>(i.data_);
-   //
-	// 	 size_t pos = s.find_first_of( "," );
-	// 	 if( pos != string::npos ) {
-	// 		 
-	// 		// short way
-	// 		options_commands_.insert( std::make_pair( "-" + s.substr(pos+1,1), get<4>(i.data_) ) );
-	// 		
-	// 		if( pos ) {
-	// 			// both large and short, so add the large way
-	// 			options_callbacks_.insert( std::make_pair( s.substr(0, pos), get<4>(i.data_) ) );
-	// 		}
-	// 	 }
-	// 	 else {
-	// 		// it's a large option-name, store as it is
-	// 		options_callbacks_.insert( std::make_pair( s, get<4>(i.data_) ) );
-	// 	 }
-   // }
-		 
 }
 
 

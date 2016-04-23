@@ -11,7 +11,13 @@ using namespace ak::gen;
 
 int main(int argc, char** argv ) 
 {
-	ak_log( 0, "starting ak_generate" );
+   LogSystem::get().initialize( "ak_generate.log", LogSystem::Level::Debug );
+
+   LOG_I( "Starting ak_generate" );
+   
+   int j = 98;
+   LOG_D( "esto", "es", "j=", j )
+
 
    ProgramOptions po;
 
@@ -28,16 +34,21 @@ int main(int argc, char** argv )
 
    }
    catch( ak::ak_options_exception const & e ) {
+      LOG_E( "ak_options_exception", e.what() );
       cout << endl << e.what() << endl;
    }
    catch( ak::ak_exception const & e ) {
+      LOG_E( "ak_exception", e.what() );
       cout << endl << e.what() << endl;
    }
    catch( std::exception const & e ) {
+      LOG_E( "exception", e.what() );
       cout << endl << e.what() << endl;
    }
 
-	int h = 9;
-	ak_log( 0, "end ak_generate", "with h=", h );
+
+   LOG_I( "Finished ak_generate" );
+
 }
+
 

@@ -1,11 +1,6 @@
 #include "LogSystem.h"
 
 
-void ak_log( string const & msg, int level )
-{
-	cout << "[ " << level << " ] " << msg << endl;
-}
-
 
 //#include <boost/log/core.hpp>
 //#include <boost/log/trivial.hpp>
@@ -44,5 +39,5 @@ void ak_log( string const & msg, int level )
 //	}
 //
 //
-}
+//}
 

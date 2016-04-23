@@ -1,5 +1,5 @@
 #include "ProgramOptions.h"
-#include "SourcePathCmd.h"
+#include "SourcesCmd.h"
 #include "ak_core/FileSystem.h"
 
 #include <iostream>
@@ -16,7 +16,7 @@ namespace gen {
 
    void ProgramOptions::initialize()
    {
-      std::shared_ptr< SourcePathCmd > src_p( new SourcePathCmd() ); 
+      std::shared_ptr< SourcesCmd > src_p( new SourcesCmd() ); 
       
       // Basic and required  options
       add_group( "Basic Options", option_def_list { 

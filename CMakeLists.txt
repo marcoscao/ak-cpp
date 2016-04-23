@@ -21,14 +21,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-find_package( boost REQUIRED COMPONENTS program_options )
+find_package( boost REQUIRED COMPONENTS program_options date_time )
 
 include_directories( ${Boost_INCLUDE_DIR} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 
 if( ${CYGWIN} )
-	set(AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options" )
+	set(AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options boost_date_time" )
 endif()
 
 if( ${APPLE} )
