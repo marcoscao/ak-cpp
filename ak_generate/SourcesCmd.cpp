@@ -8,60 +8,61 @@ using namespace std;
 namespace ak {
 namespace gen {
 
+
    SourcesCmd::SourcesCmd( )
    {
    }
 
    void SourcesCmd::execute( PO const & po )
    {
-      FileSystem fs;
-
+      LOG_I( "Executing Sources Command" )
+    
       for( auto i : source_paths_ ) {
 
-         LOG_D( "Executing Sources Command. Iterating over path", i );
-         traverse_source_path_( i );
+         LOG_I( "Iterating over source path", i );
+         stats st = traverse_source_path_( i );
+         
+         LOG_I( "Source Path", i, "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
       }
    }
 
-   void SourcesCmd::traverse_source_path_( FileSystem::f_type const & sp )
+   SourcesCmd::stats SourcesCmd::traverse_source_path_( FileSystem::f_type const & sp )
    {
-      FileSystem fm;
-	
-      if( fm.is_folder( sp ) == false ) {
+      FileSystem fs;
+      stats st;
+
+      if( fs.is_folder( sp ) == false ) {
           LOG_D( "source path:", sp, "is not a directory");
-	  return;
+	  return st;
       }
      
       LOG_D( "traversing path:",sp );
 
-      FileSystem::DirContainer ct = fm.get_items( sp );
-
-
-      unsigned long folder_size = 0;
-      int total_files = 0;
-      int total_folders = 0;
+      FileSystem::DirContainer ct = fs.get_items( sp );
 
       for( FileSystem::f_type & i : ct ) {
          //LOG_T( "traverse_source_path found item: ", i );
 
-         if( fm.is_file( i ) ) {
-            LOG_I( "found file:", i.filename(), "type", i.extension(), "size", fm.size( i ) );
-            folder_size += fm.size(i);
-            ++total_files;
+         if( fs.is_file( i ) ) {
+            LOG_I( "found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
+            st.size += fs.size(i);
+            st.files++;
          }
 
-         if( fm.is_folder( i ) ) {
+         if( fs.is_folder( i ) ) {
             LOG_T("traverse going down folder: ", i);
-            traverse_source_path_( i );
-            ++total_folders;
-         }
+            
+            st.folders++;
 
+            stats st_child = traverse_source_path_( i );
+            
+            st=st + st_child;
+         }
       }
 
-      LOG_I( "total files: ", total_files );
-      LOG_I( "total folders: ", total_folders );
-      LOG_I( "total folder size: ", to_mb( folder_size ), "Mb" );
+      LOG_I( "Folder", sp.filename(), "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
 
+      return st;
    }
 
 

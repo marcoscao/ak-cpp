@@ -16,16 +16,15 @@ namespace gen {
 
       void initialize();
 
-      void process_manually();
+      void process( int argc, char** argv );
 
 
    private:
-
       void help_op_callback_();
 
-      void dry_run_op_callback_();
-
       void version_op_callback_();
+
+      void verbose_op_callback_();
 
 
    };

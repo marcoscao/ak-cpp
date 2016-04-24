@@ -102,16 +102,32 @@ namespace ak {
          return true;
       }
 
-   
+      /*
+       * Returns container order by 2 groups
+       *    - first group folders, ordered alphabetically
+       *    - next group files, ordered alphabeticaly
+       */
       DirContainer get_items( f_type const & p )
       {
          using namespace boost::filesystem;
 
-         DirContainer v;
-         std::copy( directory_iterator(p), directory_iterator(), back_inserter(v) );
-         std::sort( begin(v), end(v) );
+         DirContainer v_folders;
+         DirContainer v_files;
 
-         return v;
+         std::copy_if( directory_iterator(p), directory_iterator(), std::back_inserter(v_folders), 
+               [&v_files]( path const & i ){ 
+                  if( is_directory( i ) ) 
+                     return true;
+
+                     v_files.push_back(i);
+                  return false;
+                  }
+               );
+         std::sort( begin(v_files), end(v_files) );
+         std::sort( begin(v_folders), end(v_folders) );
+
+         v_folders.insert( end(v_folders), begin(v_files), end(v_files) );
+         return v_folders;
       }
 
       //! size in bytes

@@ -11,7 +11,25 @@ namespace gen {
 
    class SourcesCmd : public Command {
    public:
+      
+      struct stats {
+         long files;
+         long folders;
+         unsigned long size;
 
+         stats() : files(0), folders(0), size(0) {}
+
+         stats operator+( stats const & b )
+         {
+            files += b.files;
+            folders += b.folders;
+            size += b.size;
+
+            return *this;
+         }
+      };
+
+      
       //! Holds passed source paths through command line
       using StrContainer = std::vector< std::string >;
 
@@ -28,7 +46,7 @@ namespace gen {
       StrContainer source_paths_;
 
 
-      void traverse_source_path_( FileSystem::f_type const & sp );
+      SourcesCmd::stats traverse_source_path_( FileSystem::f_type const & sp );
 
    };
 

@@ -176,8 +176,10 @@ int main(int argc, char** argv )
    // Sets the options groups
    tpo.initialize();
 
+   tpo.process_command_line_arguments( argc, argv );
+   
    // This iterate over available options calling those with callbacks
-   tpo.execute( argc, argv );
+   //tpo.execute( argc, argv );
 
    // process all those options we do not register with callbacks
    tpo.process_no_callbacks();

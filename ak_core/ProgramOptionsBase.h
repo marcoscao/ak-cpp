@@ -54,13 +54,22 @@ namespace ak {
 
       ~PO();
 
-      //! parses line command and triggers callbacks it there's any registered
-      void execute(int argc, char** argv);
+      /*
+       * Checks/verifies that passed arguments meet user rules
+       */
+      void process_command_line_arguments( int argc, char** argv );
 
-      //!
-      //! Relies on boost program_options to create typed_value ( value_semantic child )
-      //!   T the primitive type used to store a value onto
+      /*
+       * Executes callback or command ordered for passed options
+       * note: throws if the option is not registered in the invokers
+       */
+      void execute_options( std::vector< std::string > const & ops_names );
 
+      /*
+       *
+       * Relies on boost program_options to create typed_value ( value_semantic child )
+       *   T the primitive type used to store a value onto
+       */
       template<class T> 
       static boost::program_options::value_semantic * set_value( T * user_var = nullptr )
       {
@@ -146,8 +155,6 @@ namespace ak {
 
       void print_usage( const std::string & title ) const;
 
-      //! Checks/verifies that passed arguments meet user rules
-      void process_command_line_arguments( int argc, char** argv );
 
 
    private:

@@ -14,10 +14,6 @@ int main(int argc, char** argv )
    LogSystem::get().initialize( "ak_generate.log", LogSystem::Level::Debug );
 
    LOG_I( "Starting ak_generate" );
-   
-   int j = 98;
-   LOG_D( "esto", "es", "j=", j )
-
 
    ProgramOptions po;
 
@@ -27,10 +23,9 @@ int main(int argc, char** argv )
       po.initialize();
 
       // This iterate over available options calling those with callbacks
-      po.execute( argc, argv );
+      //po.execute( argc, argv );
 
-      // process all those options we do not register with callbacks
-      po.process_manually();
+      po.process( argc, argv );
 
    }
    catch( ak::ak_options_exception const & e ) {

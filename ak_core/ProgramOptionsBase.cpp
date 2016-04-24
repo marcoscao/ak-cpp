@@ -1,6 +1,7 @@
 #include "ProgramOptionsBase.h"
 #include "Command.h"
 #include "Exception.h"
+#include "LogSystem.h"
 
 #include <iostream>
 
@@ -23,29 +24,58 @@ namespace ak {
       //! TODO: Clean created options ?
    }
 
-   void PO::execute( int argc, char** argv )
+   // void PO::execute( int argc, char** argv )
+   // {
+   //    // verify/check passed options
+   //    process_command_line_arguments( argc, argv );
+   //
+   //
+   //    // iterate over known options to call callbacks
+   //    for( auto it = begin( option_invokers_ ); it != end( option_invokers_); ++it ) {
+   //
+   //    	//cout << "core:: iterating over option name:  " << it->first << endl; 
+   //      
+   //       if( has_option( it->first ) ) {
+   //
+   //          //cout << "core:: found option " << it->first << endl; 
+   //          if( it->second.first ) {
+   //             cout << "core:: launching callback for option: " << it->first << endl; 
+   //             it->second.first();
+   //          }
+   //
+	//     if( it->second.second ) {
+   //             cout << "core:: launching Command for option: " << it->first << endl; 
+	//        it->second.second->execute( *this );
+	//     }
+   //       }
+   //    }
+   // }
+
+   void PO::execute_options( vector< std::string > const & ops )
    {
-      // verify/check passed options
-      process_command_line_arguments( argc, argv );
+      for( auto op_name : ops ) {
+       
+         LOG_T( "execute_options: iterating over", op_name )
+         
+         auto it = option_invokers_.find( op_name );
+         
+         if( it == option_invokers_.end() ) {
+            LOG_E( "PO::execute_options | Not found registered option", op_name, "to be executed" )
+            throw ak_options_exception( "Not found registered option to be executed. See the log" );
+         }
 
+         if( has_option( op_name ) == false ) {
+            LOG_D( "Abort launching a NOT user set option", op_name )
+         }
+         
+         if( it->second.first ) {
+            LOG_D( "Launching callback for option", it->first ) 
+            it->second.first();
+         }
 
-      // iterate over known options to call callbacks
-      for( auto it = begin( option_invokers_ ); it != end( option_invokers_); ++it ) {
-
-      	//cout << "core:: iterating over option name:  " << it->first << endl; 
-        
-         if( has_option( it->first ) ) {
-
-            //cout << "core:: found option " << it->first << endl; 
-            if( it->second.first ) {
-               cout << "core:: launching callback for option: " << it->first << endl; 
-               it->second.first();
-            }
-
-	    if( it->second.second ) {
-               cout << "core:: launching Command for option: " << it->first << endl; 
-	       it->second.second->execute( *this );
-	    }
+         if( it->second.second ) {
+            LOG_D( "Launching Command for option", it->first) 
+            it->second.second->execute( *this );
          }
       }
    }

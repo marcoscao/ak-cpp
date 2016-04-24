@@ -1,7 +1,8 @@
 #include "Utils.h"
 #include <boost/date_time.hpp>
 
-namespace ak {
+namespace ak { namespace util {
+
 
    std::string time_now()
    {
@@ -24,5 +25,5 @@ namespace ak {
       return to_mb( bytes ) / 1024;
    }
 
-}
+} }
 

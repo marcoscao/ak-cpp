@@ -48,16 +48,6 @@ namespace ak {
 	return l;
       }
 
-      std::stringstream & buffer() 
-      {
-         return buffer_;
-      }
-
-      void clear_buffer()
-      {
-         buffer_.str( std::string() );
-      }
-
       std::string level_to_string( Level level)
       {
          switch(level) {
@@ -78,48 +68,26 @@ namespace ak {
          if( level < current_level_ )
             return;
 
-         clear_buffer();
-
-         buffer_ << "[ " << level_to_string(level) << " ] ";
-         buffer_ << time_now() << " : ";
-
-         log_item_( values... );
+         v2s_.clear_buffer();
+         v2s_.values( "[ ", level_to_string(level)," ] ", ak::util::time_now() );
  
-         fs_ << buffer_.str() << std::endl;
+         v2s_.values( values... );
 
-         std::cout << buffer_.str() << std::endl;
+         fs_ << v2s_.buffer().str() << std::endl;
 
-	 //std::cout << std::endl;
-      }
-
-      //! dumps each item of the variadic template
-      template< typename T >
-      void log_item_( T const & val )
-      {
-         buffer_ << val;
-      }
-	
-
-      //! Variadic for simple and easy usage
-      template< typename T, typename... Values>
-      void log_item_( T const & head, Values const &... values ) 
-      {
-         int n = sizeof...(Values);
-	 
-         buffer_ << head << " ";
-         log_item_( values... );
+         std::cout << v2s_.buffer().str() << std::endl;
       }
 
 
    private:
       Level current_level_;
       std::ofstream fs_;
-      std::stringstream buffer_;
+      ak::util::variadic_to_string v2s_;
 
       LogSystem()
       :  current_level_( Level::Trace ),
          fs_(),
-         buffer_()
+         v2s_()
       {
       }
       

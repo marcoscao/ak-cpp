@@ -4,6 +4,14 @@
 #include <exception>
 #include <string>
 
+// #define THROW_E( ... ) \
+// { \
+//    std::string reserved__build__str__from__variadic__ = ak::util::var2str( __VA__ARGS__ ); \
+//    LOG_E( reserved__build__str__from__variadic__ ); \
+//    throw ak::ak_exception( reserved__build__str__from__variadic__ ); \
+// } \
+//
+
 namespace ak {
 
    class ak_exception : public std::exception {
