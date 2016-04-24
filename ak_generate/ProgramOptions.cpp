@@ -1,6 +1,7 @@
 #include "ProgramOptions.h"
 #include "SourcesCmd.h"
 #include "ak_core/FileSystem.h"
+#include "ak_core/Utils.h"
 
 #include <iostream>
 
@@ -46,6 +47,17 @@ namespace ak { namespace gen {
       if( has_option( "dry-run" ) ) 
          LOG_I( "* 'dry-run' option found" ) 
 
+      cout << endl << "Going to execute with this settings: " << endl;
+      cout << " - sources : " << endl;
+      cout << " - verbose : " << endl;
+      cout << " - dry-run mode : " << endl;
+      cout << endl;
+
+      if( ak::util::prompt_question() == false ) {
+         LOG_I( "Operation aborted by the user before start" )
+         return;
+      }
+         
 
       // execute callback and command options in passed order
       execute_options( {"-v", "dry-run", "-s" } );

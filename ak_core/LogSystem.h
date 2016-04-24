@@ -69,7 +69,7 @@ namespace ak {
             return;
 
          v2s_.clear_buffer();
-         v2s_.values( "[ ", level_to_string(level)," ] ", ak::util::time_now() );
+         v2s_.values( "[", level_to_string(level),"]", ak::util::time_now(), "| " );
  
          v2s_.values( values... );
 

@@ -13,7 +13,9 @@ int main(int argc, char** argv )
 {
    LogSystem::get().initialize( "ak_generate.log", LogSystem::Level::Debug );
 
+   LOG_I( "\n-------------------------------------------------------")
    LOG_I( "Starting ak_generate" );
+
 
    ProgramOptions po;
 
@@ -43,6 +45,7 @@ int main(int argc, char** argv )
 
 
    LOG_I( "Finished ak_generate" );
+   LOG_I( "-------------------------------------------------------")
 
 }
 

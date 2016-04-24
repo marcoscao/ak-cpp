@@ -71,6 +71,11 @@ namespace ak { namespace util {
    }
 
 
+   /*
+   * Prompts a question to answer yes/no, defining the capital and behaviour when press enter without put anything
+   */
+   bool prompt_question( std::string const & msg = std::string(), bool default_is_yes = true );
+
 
 
    /*
