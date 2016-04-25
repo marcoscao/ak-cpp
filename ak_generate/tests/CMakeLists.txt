@@ -4,14 +4,26 @@ include_directories( "${PROJECT_SOURCE_DIR}")
 set( SOURCES
    ../ProgramOptions.cpp
    ../SourcesCmd.cpp
-   test_sources_op.cpp
+   test_options.cpp
 )
 
-add_executable( test_sources_option ${SOURCES} )
+add_executable( test_options ${SOURCES} )
 
-target_link_libraries( test_sources_option akcore ${AK_BOOST_TEST_LIB} )
+target_link_libraries( test_options akcore ${AK_BOOST_TEST_LIB} )
 
-install( TARGETS test_sources_option DESTINATION bin/tests )
+add_test(   
+   NAME test_options
+   WORKING_DIRECTORY ${AK_TESTS_OUTPUT_DIR}
+   COMMAND ${AK_TESTS_OUTPUT_DIR}/test_options
+)
+
+install( TARGETS test_options DESTINATION bin/tests )
 #install( FILES "${PROJECT_BINARY_DIR}/version.h" DESTINATION include )
 
+
+add_custom_command( 
+   TARGET test_options
+   POST_BUILD
+   COMMAND ctest -C $<CONFIGURATION> --output-on-failure
+)
 
