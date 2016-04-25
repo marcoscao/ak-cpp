@@ -2,10 +2,10 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
-	CreateXmlCmd.cpp
-	main.cpp
-        ProgramOptions.cpp
-	SourcesCmd.cpp
+         CreateXmlCmd.cpp
+	 main.cpp
+         ProgramOptions.cpp
+	 SourcesCmd.cpp
 )
 
 add_executable( ak_generate ${SOURCES} )
