@@ -16,3 +16,5 @@ install( TARGETS ak_generate DESTINATION bin )
 #install( FILES "${PROJECT_BINARY_DIR}/version.h" DESTINATION include )
 
 
+add_subdirectory( tests )
+

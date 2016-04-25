@@ -28,11 +28,19 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 
 
 if( ${CYGWIN} )
-	set(AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options boost_date_time" )
+	set(AK_BOOST_PROGRAM_OPTIONS_LIB 
+			boost_program_options 
+			boost_system 
+			boost_date_time 
+			boost_filesystem )
 endif()
 
 if( ${APPLE} )
-	set( AK_BOOST_PROGRAM_OPTIONS_LIB "boost_program_options-mt" )
+	set( AK_BOOST_PROGRAM_OPTIONS_LIB 
+			boost_program_options-mt
+			boost_date_time-mt 
+			boost_system-mt 
+			boost_filesystem-mt )
 endif()
 
 
