@@ -9,6 +9,8 @@
 namespace ak {
 namespace gen {
 
+	class SourcesCmd;
+
    class ProgramOptions : public PO {
    public:
 
@@ -20,12 +22,15 @@ namespace gen {
 
 
    private:
+      std::shared_ptr< SourcesCmd > sources_cmd_;
+
       void help_op_callback_();
 
       void version_op_callback_();
 
       void verbose_op_callback_();
 
+	  void show_current_settings()_;
 
    };
 

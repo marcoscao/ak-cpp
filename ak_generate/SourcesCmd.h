@@ -35,6 +35,16 @@ namespace gen {
 
       SourcesCmd( );
 		
+//      virtual const std::string & full_id() const
+//	  {
+//		  return "source-path,s";
+//	  }
+//      
+//	  virtual const std::string & description() const
+//	  {
+//         return "sets the source paths to process files. Note that can be assigned multiple source paths";
+//	  }
+
       virtual void execute( PO const & );
 
       StrContainer & source_paths()

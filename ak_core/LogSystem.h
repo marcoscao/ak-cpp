@@ -14,6 +14,8 @@
 #define LOG_I( ... ) { ak::ak_log( LogSystem::Level::Info, __VA_ARGS__ ); }
 #define LOG_E( ... ) { ak::ak_log( LogSystem::Level::Error, __VA_ARGS__ ); }
 
+#define LOG_CONSOLE( ... ) { std::cout << __VA_ARGS__ << std::endl; }
+
 
 namespace ak {
 
