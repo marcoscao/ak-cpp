@@ -1,8 +1,8 @@
 # ak-cpp
 
 NOTE: 
-Although the project code begins to be stable is still in its first stage. 
-Worst for this documentation file which is a huge draft
+Although the whole project code begins to be stable is still in its first stage.
+This documentation file is still a huge draft with no useful information
 
 
 
