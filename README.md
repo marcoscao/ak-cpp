@@ -1,31 +1,42 @@
 # ak-cpp
 
-Note: The whole project and documentation is under development / design so by now only the following is working:
-
-
-** Only tested in 'linux' based environments ( Apple OSX 'El Capitan' with ports usage and Windows 7 'Cygwin' )
-** Compilers tested: clang, gcc
-** C++11/14 support
-
+NOTE: 
+Although the project code begins to be stable is still in its first stage. 
+Worst for this documentation file which is a huge draft
 
 
 
 1. Intro
-2. Requirements
-3. Build
+2. Features
+3. Requirements
+4. Install
+5. TODO
+
+Appendix A: Running Tests 
+
+
 
 
 ## 1. Intro
 
-This is the ak suite in c++ version
+This is the ak tools suite version based in C++11/14
 
 * ak_generate
+
 * ak_query
+
 * ak_sync
 
 
-## 2. Requirements
 
+## 2. Features
+
+
+## 3. Requirements
+
+** Only tested in 'linux' based environments ( Apple OSX 'El Capitan' with ports usage and Windows 7 'Cygwin' )
+** Compilers tested: clang, gcc
+** C++11/14 support
 
 
 * boost libraries
@@ -33,7 +44,8 @@ This is the ak suite in c++ version
 * lxml
 
 
-## 3. Build
+
+## 4. Install
 
 $ ./build.sh && ./compile.sh
 
