@@ -51,7 +51,6 @@ namespace ak { namespace util {
       if( s=="y" or s=="yes" )
          return true;
 
-      cout << "kkaka" << endl;
       return false;
    }
 

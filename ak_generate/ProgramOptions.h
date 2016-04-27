@@ -2,6 +2,7 @@
 #define AK_GENERATE_PROGRAM_OPTIONS__
 
 #include "ak_core/ProgramOptionsBase.h"
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,7 @@ namespace gen {
 
       void verbose_op_callback_();
 
-	  void show_current_settings()_;
+      void show_current_settings_();
 
    };
 

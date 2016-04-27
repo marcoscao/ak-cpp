@@ -14,7 +14,7 @@
 #define LOG_I( ... ) { ak::ak_log( LogSystem::Level::Info, __VA_ARGS__ ); }
 #define LOG_E( ... ) { ak::ak_log( LogSystem::Level::Error, __VA_ARGS__ ); }
 
-#define LOG_CONSOLE( ... ) { std::cout << __VA_ARGS__ << std::endl; }
+#define LOG_CONSOLE( ... ) { LogSystem::get().log_console( __VA_ARGS__ ); }
 
 
 namespace ak {
@@ -26,7 +26,8 @@ namespace ak {
          Debug,
          Warning,
          Info,
-         Error
+         Error,
+         Console
       };
       
 
@@ -58,6 +59,7 @@ namespace ak {
             case Level::Warning : return "WARNING";
             case Level::Info : return "INFO";
             case Level::Error : return "ERROR";
+            case Level::Console : return "CONSOLE";
             };
 
          return "UNKNOW";
@@ -71,12 +73,21 @@ namespace ak {
             return;
 
          v2s_.clear_buffer();
+
          v2s_.values( "[", level_to_string(level),"]", ak::util::time_now(), "| " );
  
          v2s_.values( values... );
 
          fs_ << v2s_.buffer().str() << std::endl;
+         //std::cout << v2s_.buffer().str() << std::endl;
+      }
 
+      //! specialization dumping to console
+      template< typename... Values>
+      void log_console( Values const &... values ) 
+      {
+         v2s_.clear_buffer();
+         v2s_.values( values... );
          std::cout << v2s_.buffer().str() << std::endl;
       }
 

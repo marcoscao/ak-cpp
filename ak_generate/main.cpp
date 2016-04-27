@@ -15,8 +15,9 @@ int main(int argc, char** argv )
 
    LOG_I( "\n-------------------------------------------------------")
    LOG_I( "Starting ak_generate" );
-
-
+   
+   //LOG_CONSOLE( "ak_generate\n" );
+   
    ProgramOptions po;
 
    try {
@@ -46,6 +47,8 @@ int main(int argc, char** argv )
 
    LOG_I( "Finished ak_generate" );
    LOG_I( "-------------------------------------------------------")
+
+   LOG_CONSOLE( "Finished ok" );
 
 }
 

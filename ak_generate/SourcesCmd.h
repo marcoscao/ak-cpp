@@ -53,6 +53,7 @@ namespace gen {
       }
 
    private:
+      bool verbose_;
       StrContainer source_paths_;
 
 

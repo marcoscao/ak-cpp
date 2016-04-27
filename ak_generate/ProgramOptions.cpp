@@ -46,7 +46,7 @@ namespace ak { namespace gen {
       // let boost do the first processing stuff
       process_command_line_arguments( argc, argv );
 
-	show_current_settings();
+      show_current_settings_();
 
       if( ak::util::prompt_question() == false ) {
          LOG_I( "Operation aborted by the user before start" )
@@ -54,7 +54,10 @@ namespace ak { namespace gen {
       }
 
       // execute callback and command options in order
-      execute_options( {"dry-run", "-v", "-s" } );
+      if( has_option("verbose") )
+         execute_options( { "-v" } );
+      
+      execute_options( { "dry-run", "-s" } );
    }
 
    void ProgramOptions::help_op_callback_()
@@ -83,32 +86,37 @@ namespace ak { namespace gen {
       cout << "verbose stuff here" << endl; 
    }
 
-	void ProgramOptions::show_current_settings()
-	{
-	 cout << endl;
+   void ProgramOptions::show_current_settings_()
+   {
+      cout << endl;
+      LOG_CONSOLE( "Going to execute with the following options\n" )
 
-	 LOG_CONSOLE( "Going to execute with the following options\n" )
-
-	 if( has_option("dry-run") )
-		  LOG_CONSOLE( " - dry-run mode :", "YES" )
+      if( has_option("dry-run") )
+         LOG_CONSOLE( " - dry-run mode :", "YES" )
 	 
-	 if( has_option("source-path") ) {
+      if( has_option("source-path")  && ( sources_cmd_->source_paths().empty() == false ) ) {
 
-		  stringstream ss;
-		  //SourcesCmd::Container const & v = option_command< SourcesCmd& >( "source-path" ).source_paths();
-		  SourcesCmd::StrContainer const & v = sources_cmd_->source_paths();
+         stringstream ss;
+         auto const & v = sources_cmd_->source_paths();
+         auto it = begin(v);
+         do {
+            ss << "\"" << *it << "\"";
 
-		  copy( begin(v), end(v), [&ss]( string const & i ) {
-					 ss << "      . \'" << i << "\'" << endl;				 } );
+            if( ++it != end(v) )
+               ss << endl << "             ";
+ 
+         } while( it != end(v) );
 
-		  LOG_CONSOLE( " - sources :\n", ss.str() )
-	 }
+         LOG_CONSOLE( " - sources :", ss.str() )
+      }
 
-	 if( has_option( "verbose" ) )
-		  LOG_CONSOLE( " - verbose :", "YES" )
+      if( has_option( "verbose" ) )
+         LOG_CONSOLE( " - verbose :", "YES" )
+      else
+         LOG_CONSOLE( " - verbose :", "NO" )
 
-
-	 cout << endl;
+      cout << endl;
+   }
 
 } } // end namespaces
 
