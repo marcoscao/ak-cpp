@@ -28,6 +28,8 @@ find_package( boost REQUIRED COMPONENTS program_options date_time )
 include_directories( ${Boost_INCLUDE_DIR} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
+find_package( sqlite3 )
+
 
 if( ${CYGWIN} )
    set(AK_BOOST_PROGRAM_OPTIONS_LIB 
@@ -59,6 +61,8 @@ message( "* ak: boost library dirs: ${Boost_LIBRARY_DIRS}" )
 message( "* ak: boost program_options found: ${Boost_PROGRAM_OPTIONS_FOUND}" )
 message( "* ak: AK_BOOST_PROGRAM_OPTIONS_LIB : ${AK_BOOST_PROGRAM_OPTIONS_LIB}" )
 message( "* ak: AK_TESTS_OUTPUT_DIR : ${AK_TESTS_OUTPUT_DIR}" )
+message( "* ak: sqlite3 include dirs: ${SQLITE3_INCLUDE_DIRS}" )
+message( "* ak: sqlite3 libraries: ${SQLITE3_LIBRARIES}" )
 
 
 add_subdirectory( ak_core )

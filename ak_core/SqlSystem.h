@@ -3,45 +3,45 @@
 
 #include<string>
 
-class sqlite3;
+struct sqlite3;
 
-namespace ak_core {
+namespace ak {
 
-	class SqlSystem {
-	public:
-		SqlSystem()
+   class SqlSystem {
+   public:
+       SqlSystem();
 
-		~SqlSystem()
+       ~SqlSystem();
 
-		// TODO: open and check version to determine whether needed to be updated
-		// maybe open an update_sql.def file and check if its version is greater than the internal db_version name
-		bool open_db( std::string const & db_name );
+       // TODO: open and check version to determine whether needed to be updated
+       // maybe open an update_sql.def file and check if its version is greater than the internal db_version name
+       bool open_db( std::string const & db_name );
 
-		bool create_db( std::string const & db_name, std::string const & sql_def_file = std::string() );
+       bool create_db( std::string const & db_name, std::string const & sql_def_file = std::string() );
 
-		/*
-		 * Exists db file and is valid
-		 */
-		bool exist_db( std::string const & db_name ) const;
+       /*
+        * Exists db file and is valid
+        */
+       bool exist_db( std::string const & db_name ) const;
 
-		bool update_db( std::string const & db_name, std::string const & sql_def_file = std::string() );
+       bool update_db( std::string const & db_name, std::string const & sql_def_file = std::string() );
 
-		/*
-			 checking if update file exists
-			 then request user to perform update
-		 * 
-		 */
-		bool search_for_updates() const;
+       /*
+                checking if update file exists
+                then request user to perform update
+        * 
+        */
+       bool search_for_updates() const;
 
-		bool execute_sql( std::string const & db_name ) const
+       bool execute_sql( std::string const & db_name ) const;
 
-	private:
-		//shared_ptr< sqlite3 > sqlite_;
-		sqlite3 * sqlite_;
+   private:
+       //shared_ptr< sqlite3 > sqlite_;
+       sqlite3 * sqlite_;
 
-		bool exist_update_file_() const;
+       bool exist_update_file_() const;
 
-	};
+   };
 
 }
 
