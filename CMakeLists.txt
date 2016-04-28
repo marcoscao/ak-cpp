@@ -10,6 +10,8 @@ project(ak)
 enable_testing()
 
 
+
+
 # clang
 SET( CMAKE_CXX_COMPILER "g++" )
 
@@ -18,18 +20,43 @@ SET( CMAKE_CXX_COMPILER "g++" )
 
 SET( CMAKE_CXX_FLAGS "-std=c++11" )
 
+
+#
+# main directories
+#
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(AK_TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin)
 
+
+#
+# Packages stuff
+# set local dir with other find scripts
+set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/third_parties/ )
+
+
+
+#
+# Boost stuff
+#
 find_package( boost REQUIRED COMPONENTS program_options date_time )
 
 include_directories( ${Boost_INCLUDE_DIR} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
+
+#
+# Sqlite3 stuff
+#
 find_package( sqlite3 )
 
+
+
+
+#
+# set third parties includes and libraries paths
+#
 
 if( ${CYGWIN} )
    set(AK_BOOST_PROGRAM_OPTIONS_LIB 
@@ -54,6 +81,7 @@ if( ${APPLE} )
             boost_unit_test_framework-mt )
 
 endif()
+
 
 
 message( "* ak: boost include dirs: ${Boost_INCLUDE_DIR}" )
