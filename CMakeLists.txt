@@ -33,7 +33,7 @@ set(AK_TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin)
 #
 # Packages stuff
 # set local dir with other find scripts
-set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/third_parties/ )
+set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/third_parties/cmake/ )
 
 
 
