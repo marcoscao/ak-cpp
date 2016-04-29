@@ -7,9 +7,9 @@ namespace ak {
 
    class AppManager {
       
-      void initializa() 
+	void initializa() 
 
-      //! Add registered options
+    //! Add registered options
 	virtual void add_options() 
 
 	void execute()

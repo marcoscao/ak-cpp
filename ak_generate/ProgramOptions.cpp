@@ -10,56 +10,6 @@ using namespace std;
 
 
 
-class Option {
-	virtual void definition() = 0;
-	virtual void run() = 0;
-};
-
-class UserOption : public Option {
-};
-
-class SystemOption : public Option {
-};
-
-class AppManager {
-	void initializa() { register_options_(); }
-
-	virtual void add_options() 
-	{ 
-	}
-
-	void run()
-	{
-	}
-protected:
-	void register_option( int id, 
-private:
-	virtual void register_options_() = 0;
-
-};
-
-class UserOption : public Option {
-};
-
-class SystemOption : public Option {
-};
-
-class AkGenApp : public AppMgr {
-public:
-	void add_options()
-	{
-		add_option( UO_SOURCES );
-
-	}
-private:
-	void register_options_() {
-		register_option( UO_SOURCES, SourcesOp );
-		register_option( UO_HELP, HelpOp );
-
-	}
-
-};
-
 
 namespace ak { namespace gen {
 
