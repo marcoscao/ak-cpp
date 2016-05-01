@@ -5,8 +5,6 @@
 #include "ak_core/ParseOptionsBase.h"
 #include "ak_core/LogSystem.h"
 
-#include "draft.h"
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -24,7 +22,8 @@ namespace ak {
          enum OptionsIds {
             SOURCES_OP_ID = 100,
             HELP_OP_ID,
-            VERBOSE_OP_ID
+            VERBOSE_OP_ID,
+            VERSION_OP_ID
          };
 
          ParseOptions();

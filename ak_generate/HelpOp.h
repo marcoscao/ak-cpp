@@ -1,5 +1,5 @@
-#ifndef AK_GEN_SOURCES_OP_H__
-#define AK_GEN_SOURCES_OP_H__
+#ifndef AK_GEN_HELP_OP_H__
+#define AK_GEN_HELP_OP_H__
 
 #include "ak_core/LogSystem.h"
 #include "ak_core/Option.h"
@@ -10,10 +10,8 @@
 
 namespace ak { namespace gen {
 
-   class SourcesOp : public ak::UserOption {
+   class HelpOp : public ak::UserOption {
    public:
-      using SourcesCt = std::vector< std::string >;
-
       static Option * create();
 
       virtual std::string cmdline_id();
@@ -25,13 +23,7 @@ namespace ak { namespace gen {
       virtual ParseOptionsBase::StorageType * storage_type();
 
       virtual void execute();
-
-      const SourcesCt & sources() const;
-
-   private:
-      SourcesCt sources_paths_;
    };
-
 
 } }
 

@@ -1,5 +1,8 @@
 #include "ParseOptions.h"
+#include "HelpOp.h"
 #include "SourcesOp.h"
+#include "VerboseOp.h"
+#include "VersionOp.h"
 
 #include "ak_core/Factory.h"
 #include "ak_core/FileSystem.h"
@@ -7,9 +10,6 @@
 
 #include <iostream>
 #include <sstream>
-
-#include "draft.h"
-
 
 using namespace std;
 
@@ -21,9 +21,10 @@ namespace ak { namespace gen {
 
    void ParseOptions::register_options( factory<Option> & f )
    {
-      f.register_item( SOURCES_OP_ID, SourcesOp::create );  //&SourcesOp::create ) );
-      f.register_item( HELP_OP_ID, &HelpOp::create );
-      f.register_item( VERBOSE_OP_ID, &VerboseOp::create );
+      f.register_item( SOURCES_OP_ID, SourcesOp::create );  
+      f.register_item( HELP_OP_ID, HelpOp::create );
+      f.register_item( VERBOSE_OP_ID, VerboseOp::create );
+      f.register_item( VERSION_OP_ID, VersionOp::create );
    }
 
    // void ProgramOptions::initialize()
@@ -73,6 +74,21 @@ namespace ak { namespace gen {
 
    void ParseOptions::execute() {
 
+      // force to show always except when requesting only version
+      // in such case show it and exit
+      execute_option_if( VERSION_OP_ID, true );
+
+      if( has_user_entered_option( VERSION_OP_ID ) )
+         return;
+
+      if( no_user_options() ) {
+         LOG_CONSOLE("Please run with --help or -h to display correct usage and available options.");
+         return;
+      }
+
+      if( execute_option_if( HELP_OP_ID ) )
+         return;
+      
       show_current_settings_();
 
       if( ak::util::prompt_question() == false ) {
@@ -80,11 +96,7 @@ namespace ak { namespace gen {
          return;
       }
 
-      if( has_entered_option( SOURCES_OP_ID ) ) {
-         SourcesOp * op = static_cast< SourcesOp* >( option_ptr( SOURCES_OP_ID ) );
-         op->execute();
-      }
-
+      execute_option_if( SOURCES_OP_ID );
    }
 
    // void ProgramOptions::help_op_callback_()
@@ -121,7 +133,7 @@ namespace ak { namespace gen {
       //if( has_entered_option("dry-run") )
       //   LOG_CONSOLE( " - dry-run mode :", "YES" )
 	 
-      if( has_entered_option( SOURCES_OP_ID ) ) {
+      if( has_user_entered_option( SOURCES_OP_ID ) ) {
          
          SourcesOp * op = static_cast<SourcesOp*>( option_ptr( SOURCES_OP_ID ) );
 
@@ -140,7 +152,7 @@ namespace ak { namespace gen {
       }
 
       
-      if( has_entered_option( VERBOSE_OP_ID ) )
+      if( has_user_entered_option( VERBOSE_OP_ID ) )
          LOG_CONSOLE( " - verbose :", "YES" )
       else
          LOG_CONSOLE( " - verbose :", "NO" )

@@ -55,21 +55,35 @@ namespace ak {
    //       add_positional( i );
    // }
 
-   bool ParseOptionsBase::has_entered_option( int registered_id ) const
+   bool ParseOptionsBase::has_user_entered_option( int registered_id ) const
    {
       auto it = added_options_.find( registered_id );
       if( it == added_options_.end() )
-         return false;
+         throw ak_exception("no registerd option id: " + std::to_string(registered_id) + " to check if it was entered by the user" );
 
       return bpo_vm_.count( it->second->name() );
    } 
 
-   bool ParseOptionsBase::has_entered_option( std::string const & op_name ) const
+   bool ParseOptionsBase::execute_option_if( int registered_id, bool force ) 
    {
-      return bpo_vm_.count( op_name );
+      auto it = added_options_.find( registered_id );
+      if( it == added_options_.end() )
+         throw ak_exception("no registerd option id: " + std::to_string(registered_id) + " while trying to execute option" );
+
+      if( bpo_vm_.count( it->second->name() )  || force ) {
+         it->second->execute();
+         return true;
+      }
+
+      return false;
    } 
 
-   bool ParseOptionsBase::no_user_option( ) const
+   // bool ParseOptionsBase::has_user_entered_option( std::string const & op_name ) const
+   // {
+   //    return bpo_vm_.count( op_name );
+   // } 
+
+   bool ParseOptionsBase::no_user_options( ) const
    {
       return bpo_vm_.empty();
    } 

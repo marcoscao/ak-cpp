@@ -122,14 +122,22 @@ namespace ak {
       /*
        * has user entered such option?
        */
-      bool has_entered_option( std::string const & ) const;
+      //bool has_entered_option( std::string const & ) const;
 
-      bool has_entered_option( int registered_id ) const;
+      bool has_user_entered_option( int registered_id ) const;
 
       /*
        * True if user has not set such option
        */
-      bool no_user_option( ) const;
+      bool no_user_options( ) const;
+
+      /*
+       * execute registered option only if it was entered by the user
+       * if force = TRUE means that it will be execute although it was not entered by the user
+       * it throws if option is not register
+       * Returns true if option has been executed
+       */
+      bool execute_option_if( int registered_id, bool force = false );
 
       /*
        * Returns Option* instance associtated to registered_id

@@ -2,8 +2,11 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
+   ../HelpOp.cpp
    ../ParseOptions.cpp
-   #../SourcesCmd.cpp
+   ../SourcesOp.cpp
+   ../VerboseOp.cpp
+   ../VersionOp.cpp
    test_options.cpp
 )
 
