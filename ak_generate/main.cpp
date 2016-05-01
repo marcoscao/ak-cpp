@@ -1,12 +1,14 @@
-#include "ProgramOptions.h"
+#include "ParseOptions.h"
+#include "ak_core/AppManager.h"
 #include "ak_core/Exception.h"
 #include "ak_core/LogSystem.h"
+
+#include "draft.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace ak;
-using namespace ak::gen;
 
 
 int main(int argc, char** argv ) 
@@ -15,20 +17,22 @@ int main(int argc, char** argv )
 
    LOG_I( "\n-------------------------------------------------------")
    LOG_I( "Starting ak_generate" );
-   
-   //LOG_CONSOLE( "ak_generate\n" );
-   
-   ProgramOptions po;
+      
+   LOG_CONSOLE( "ak_generate\n" );
 
    try {
+
+      AppManager app;
+
+      app.set_options_parser( new gen::ParseOptions() );
+
+      // Create desired options from factory registered ones
+      app.add_options( { gen::ParseOptions::SOURCES_OP_ID, 
+                         gen::ParseOptions::VERBOSE_OP_ID }, 
+                         "Basic Options" );
       
-      // Sets the options groups
-      po.initialize();
-
-      // This iterate over available options calling those with callbacks
-      //po.execute( argc, argv );
-
-      po.process( argc, argv );
+      LOG_I( "Going to execute" );
+      app.execute( argc, argv );
 
    }
    catch( ak::ak_options_exception const & e ) {
@@ -50,6 +54,7 @@ int main(int argc, char** argv )
 
    LOG_CONSOLE( "Finished ok" );
 
+   return 0;
 }
 
 

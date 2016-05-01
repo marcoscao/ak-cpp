@@ -1,126 +1,119 @@
+#ifndef AK_DRAFT_H__
+#define AK_DRAFT_H__
+
+#include "ak_core/Exception.h"
+#include "ak_core/Factory.h"
+#include "ak_core/Option.h"
+#include "ak_core/ParseOptionsBase.h"
+
+#include <iostream>
+#include <functional>
+#include <memory>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
 
 namespace ak {
 
 
-class Option {
-	int id;
-	string short_name;
-	string large_name;
-	string desc;
+// class SourcesOp : public UserOption {
+// public:
+//    using SourcesCt = std::vector< std::string >;
+//
+//    static Option * create()
+//    {
+//       return new SourcesOp();
+//    }
+//
+//    virtual string cmdline_id() {
+//       return "source-path,s";
+//    }
+//
+//    virtual string name() {
+//       return "source-path";
+//    }
+//
+//    virtual string description() {
+//       return "Sets source paths to iterate over. This option can be used multiple times";
+//    }
+//
+//    virtual ParseOptionsBase::StorageType * storage_type() {
+//       return ParseOptionsBase::set_multiple< string >( &sources_paths_ );
+//    }
+//
+//    virtual void execute() {
+//       LOG_CONSOLE("Great!! doing source-path stuff" )      
+//    }
+//
+//    const SourcesCt & sources() const
+//    {
+//       return sources_paths_;
+//    }
+//
+//
+// private:
+//    SourcesCt sources_paths_;
+// };
+//
 
-	virtual void definition() = 0;
-	virtual void large_name() = 0;
-	virtual void short_name() = 0;
-	virtual void string desc() = 0;
-	virtual void execute() = 0;
-};
-
-class UserOption : public Option {
-};
-
-class SystemOption : public Option {
-};
 
 
+   class HelpOp : public UserOption {
+   public:
+      static int ID;
 
+      virtual string cmdline_id() {
+         return "help,h";
+      }
 
+      virtual string name() {
+         return "help";
+      }
 
-template<typename T>
-class factory {
+      static Option * create()
+      {
+         return new HelpOp();
+      }
+
+      // virtual Option::option_def definition()
+      // {
+      //    return { "sources", "sources", "s", "Sets source paths to iterate over" };
+      // }
+
+   };
+
+class VerboseOp : public UserOption {
 public:
-	
-	/*
-	 * Register everything
-	 */
-	virtual void registrar() = 0;
 
+   static Option * create()
+   {
+      return new VerboseOp();
+   }
 
-	void register_item( int id, RegFn ) 
-	{
-		// add into RegMap
-	}
+   virtual string cmdline_id() {
+      return "verbose";
+   }
 
-	bool is_registered( int id )
-	{
-	}
+   virtual string name() {
+      return "verbose";
+   }
 
-	T * create_op( int id )
-	{
-		// creates and store into internal map to later delete it
-	}
+   virtual string description() {
+      return "Verbose mode";
+   }
 
-private:
-	using RegFn = std::function< T * () >;
-	using RegMap = std::unordered_map< int, RegFn > ct_;
-	using Instances = std::vector< std::shared_ptr< Option > >;
-
-	static RegMap registered_;
-	static InstancssMap instances_;				// stores created instances to later delete
-};
-
-template<typename T>
-factory<T>::ct_;
-
-
-
-
-
-class OptionsFactory : public factory< Option > {
-
-public:
-	virtual void registrar()
-	{
-		register_item( SourcesOp::ID, &SourcesOp::create );
-		register_item( HelpOp::ID, &HelpOp::create );
-	}
-
+   virtual void execute() {
+      LOG_CONSOLE("Great!! doing verbose stuff" )      
+   }
 };
 
 
-
-
-
-class AppManager {
-public:
-	AppManager()
-		: factory_()
-	{
-	}
-
-	void set_options_factory( factory<Option> * f )
-	{
-		if( f == false )
-			throw ak_exception("null factory");
-
-		factory_ = std::shared_ptr< factory<Option> >( f );
-		factory_->registrar();
-	}
-
-	void initializa() { 
-	}
-
-	virtual void add_options() 
-	{ 
-	}
-
-	void execute()
-	{
-	}
-	
-private:
-	std::shared_ptr< factory<Option> > factory_;
-};
-
-
-
-int main(int argc, char** argv )
-{
-	AppManager app;
-	app.set_options_factory( new OptionsFactory() );
-	
-	app.add_option( SourcesOp::ID );
-	app.add_option( HelpOp::ID );
-
-	app.parse_options( argc, argv );
 
 }
+
+
+
+#endif
+
+

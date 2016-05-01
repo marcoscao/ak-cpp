@@ -112,6 +112,11 @@ namespace ak {
    void ak_log( LogSystem::Level level, Values const &... values ) 
    {
       LogSystem::get().log( level, values... );
+      
+      if( level == LogSystem::Level::Error || level == LogSystem::Level::Console )
+         LogSystem::get().log_console( values... );
+         
+      //LogSystem::get().log_console( values... );
    }
 
    

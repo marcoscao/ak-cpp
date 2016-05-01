@@ -11,7 +11,7 @@ namespace ak {
 
    const char* ak_exception::what() const throw()
    {
-      return string( msg_ ).c_str();
+      return msg_.c_str();
    }
 
    ak_options_exception::ak_options_exception( string const & msg )
