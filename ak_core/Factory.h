@@ -26,13 +26,32 @@ namespace ak {
       virtual void registrar();
 
 
-      void register_item( int id, RegFn fn ) 
+      // void register_item( int id, RegFn fn ) 
+      // {
+      //     auto it = registered_.find( id );
+      //
+      //     if( it != registered_.end() )
+      //        throw ak_exception( "id: " + std::to_string( id ) + " previously registered while registering item" );
+      //
+      //    std::pair< typename RegMap::iterator, bool> p = registered_.insert( typename RegMap::value_type( id, fn ) );
+      //    if( p.second == false )
+      //       throw ak_exception( "Something wrong trying to register option id: " + std::to_string(id) );
+      // }
+
+      /*
+       * Register item id
+       * typename D = is the class to automatically attach "callback" to the create() method
+       */
+      template< typename D >
+      void register_item( int id ) 
       {
           auto it = registered_.find( id );
 
           if( it != registered_.end() )
              throw ak_exception( "id: " + std::to_string( id ) + " previously registered while registering item" );
 
+         // Set the default callback function as D::create
+         RegFn fn = D::create;
          std::pair< typename RegMap::iterator, bool> p = registered_.insert( typename RegMap::value_type( id, fn ) );
          if( p.second == false )
             throw ak_exception( "Something wrong trying to register option id: " + std::to_string(id) );
@@ -53,7 +72,7 @@ namespace ak {
          if( p == nullptr )
             throw ak_exception( "Something wrong creating item id: " + std::to_string(id) );
 
-         p->set_registered_id( id );
+         p->set_registered_id_( id );
 
          instances_.push_back( std::shared_ptr<T>( p ) );
            

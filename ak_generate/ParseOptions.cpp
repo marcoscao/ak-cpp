@@ -21,56 +21,12 @@ namespace ak { namespace gen {
 
    void ParseOptions::register_options( factory<Option> & f )
    {
-      f.register_item( SOURCES_OP_ID, SourcesOp::create );  
-      f.register_item( HELP_OP_ID, HelpOp::create );
-      f.register_item( VERBOSE_OP_ID, VerboseOp::create );
-      f.register_item( VERSION_OP_ID, VersionOp::create );
+      f.register_item< SourcesOp >( SOURCES_OP_ID );  
+      f.register_item< HelpOp >( HELP_OP_ID );
+      f.register_item< VerboseOp >( VERBOSE_OP_ID );
+      f.register_item< VersionOp >( VERSION_OP_ID );
+      //f.register_item< VersionOp >( DRY_RUN_OP_ID );
    }
-
-   // void ProgramOptions::initialize()
-   // {
-   //    //std::shared_ptr< SourcesCmd > src_p( new SourcesCmd() ); 
-   //    
-   //    // Basic and required  options
-   //    add_group( "Basic Options", option_def_list { 
-	// 			
-   //       option_def{ "help", "help command", nullptr, std::bind( &ProgramOptions::help_op_callback_, this ) },
-   //       option_def{ "verbose,v", "sets verbose mode", nullptr, std::bind( &ProgramOptions::verbose_op_callback_, this ) },
-   //      
-   //       // sources managed by a customized command
-   //       option_def{ "source-path,s", "sets the source paths to process files. Note that can be assigned multiple source paths", 
-	// 	  set_multiple< string >( &sources_cmd_->source_paths() ),
-	// 	  nullptr,
-	// 	  sources_cmd_ }
-   //       } 
-   //    );
-   //
-   //    // Extended and miscelanean options
-   //    add_group( "Extended Options", option_def_list { 
-   //          option_def{ "dry-run", "simulation. executes the command but with no side effects" },
-   //          option_def{ "version", "current version", nullptr, std::bind( &ProgramOptions::version_op_callback_, this ) },
-   //          }  
-   //    );
-   // }
-
-   // void ProgramOptions::process( int argc, char** argv )
-   // {
-   //    // let boost do the first processing stuff
-   //   /process_command_line_arguments( argc, argv );
-   //
-   //    show_current_settings_();
-   //
-   //    if( ak::util::prompt_question() == false ) {
-   //       LOG_I( "Operation aborted by the user before start" )
-   //       return;
-   //    }
-   //
-   //    // execute callback and command options in order
-   //    if( has_option("verbose") )
-   //       execute_options( { "-v" } );
-   //    
-   //    execute_options( { "dry-run", "-s" } );
-   // }
 
    void ParseOptions::execute() {
 
@@ -120,11 +76,7 @@ namespace ak { namespace gen {
    //    cout << "version  2016.04.001" << endl;
    // }
    //
-   // void ProgramOptions::verbose_op_callback_()
-   // {
-   //    cout << "verbose stuff here" << endl; 
-   // }
-   //
+
    void ParseOptions::show_current_settings_()
    {
       cout << endl;

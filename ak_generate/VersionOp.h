@@ -22,7 +22,9 @@ namespace ak { namespace gen {
 
       virtual ParseOptionsBase::StorageType * storage_type();
 
-      virtual void execute();
+      virtual void execute( ParseOptionsBase const & );
+
+      void detailed();
    };
 
 } }

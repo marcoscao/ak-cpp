@@ -25,8 +25,15 @@ namespace ak { namespace gen {
       return nullptr;
    }
 
-   void VersionOp::execute() {
-      LOG_CONSOLE("ak_generate ver. 2016.05.001  (c) mscao 2016\n" )      
+   void VersionOp::execute( ParseOptionsBase const & ) {
+      LOG_CONSOLE("ak_generate ver. 2016.05.001  (c) mscao 2016" )      
+   }
+
+   void VersionOp::detailed() 
+   {
+      LOG_CONSOLE("ak_generate ver. 2016.05.001" )      
+      LOG_CONSOLE("Built on May 2016" )      
+      LOG_CONSOLE("(c) m.santamaria" )      
    }
 
 } }

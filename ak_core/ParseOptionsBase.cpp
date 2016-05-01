@@ -71,7 +71,7 @@ namespace ak {
          throw ak_exception("no registerd option id: " + std::to_string(registered_id) + " while trying to execute option" );
 
       if( bpo_vm_.count( it->second->name() )  || force ) {
-         it->second->execute();
+         it->second->execute( *this );
          return true;
       }
 
@@ -103,7 +103,6 @@ namespace ak {
       return it->second;
    }
 
-   //void ParseOptionsBase::process_command_line( int argc, char** argv )
    void ParseOptionsBase::process_command_line_arguments( int argc, char** argv )
    {
       try {
@@ -111,16 +110,6 @@ namespace ak {
          po::store(  po::command_line_parser( argc, argv )
                      .options( bpo_desc_ ).positional( bpo_positional_ ).run(),
                      bpo_vm_ ); 
-
-         // // just in case correct usage check if user asks for help
-         // if( bpo_vm_.count("help" ) || bpo_vm_.empty() ) {
-      	 //    // trigger user callback if it is possible
-	 //    auto it = option_invokers_.find( "help" );
-	 //    if ( it != option_invokers_.end() && it->second.first ) {
-	 //       it->second.first();
-	 //       exit(0);
-	 //    }
-         // }
          
          // throws on error
          po::notify( bpo_vm_ ); 

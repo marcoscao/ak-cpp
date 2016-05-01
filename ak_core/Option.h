@@ -10,28 +10,22 @@ class Option {
    template<typename> friend class factory;
 
 public:
-   Option()
-   : registered_id_( 0 )
-   {
-   }
+   Option();
    
-   int registered_id() const
-   {
-      return registered_id_;
-   }
+   int registered_id() const;
 
    //! "verbose,v"  
    virtual std::string cmdline_id() = 0;
 
    //! "verbose"
-   virtual std::string name();
+   virtual std::string name() = 0;
 
    //! "verbose desc"
-   virtual std::string description();
+   virtual std::string description() = 0;
 
    virtual ParseOptionsBase::StorageType * storage_type();
 
-   virtual void execute();
+   virtual void execute( ParseOptionsBase const & ) = 0;
 
 
 private:
@@ -40,10 +34,7 @@ private:
    /*
     * Set automatically by factory
     */
-   void set_registered_id( int id )
-   {
-      registered_id_ = id;
-   }
+   void set_registered_id_( int id );
 
 };
 

@@ -12,7 +12,31 @@ namespace ak { namespace gen {
 
    class SourcesOp : public ak::UserOption {
    public:
+      // struct stats {
+      //    long files;
+      //    long folders;
+      //    unsigned long size;
+      //
+      //    stats() : files(0), folders(0), size(0) {}
+      //
+      //    stats operator+( stats const & b )
+      //    {
+      //       files += b.files;
+      //       folders += b.folders;
+      //       size += b.size;
+      //
+      //       return *this;
+      //    }
+      // };
+      //
+      //
+      // //! Holds passed source paths through command line
+      // using StrContainer = std::vector< std::string >;
+
+
       using SourcesCt = std::vector< std::string >;
+
+      SourcesOp();
 
       static Option * create();
 
@@ -24,11 +48,12 @@ namespace ak { namespace gen {
 
       virtual ParseOptionsBase::StorageType * storage_type();
 
-      virtual void execute();
+      virtual void execute( ParseOptionsBase const & );
 
       const SourcesCt & sources() const;
 
    private:
+      bool using_verbose_;
       SourcesCt sources_paths_;
    };
 

@@ -25,7 +25,7 @@ namespace ak { namespace gen {
       return nullptr;
    }
 
-   void VerboseOp::execute() {
+   void VerboseOp::execute( ParseOptionsBase const & ) {
       LOG_CONSOLE("Great!! Entering verbose mode" )      
    }
 
