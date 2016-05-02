@@ -1,10 +1,12 @@
-#ifndef AK_OPTION_H__
-#define AK_OPTION_H__
+#ifndef AK_CORE_OPTION_H__
+#define AK_CORE_OPTION_H__
 
 #include "ParseOptionsBase.h"
 #include <string>
 
 namespace ak {
+
+   class Visitor;
 
 class Option {
    template<typename> friend class factory;
@@ -27,6 +29,7 @@ public:
 
    virtual void execute( ParseOptionsBase const & ) = 0;
 
+   virtual void accept( Visitor & );
 
 private:
    int registered_id_;

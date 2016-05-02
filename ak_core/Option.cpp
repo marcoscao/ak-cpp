@@ -1,4 +1,5 @@
 #include "Option.h"
+#include "Visitor.h"
 
 namespace ak {
 
@@ -30,6 +31,11 @@ namespace ak {
    ParseOptionsBase::StorageType * Option::storage_type() 
    { 
       return nullptr; 
+   }
+
+   void Option::accept( Visitor & v ) 
+   { 
+      v.visit( *this );
    }
 
 }

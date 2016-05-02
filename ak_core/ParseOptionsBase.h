@@ -13,6 +13,7 @@
 namespace ak {
    
    class Option;
+   class Visitor;
 
    template<typename T=Option>
    class factory;
@@ -154,6 +155,10 @@ namespace ak {
 
       void print_usage( const std::string & title ) const;
 
+      /*
+       * Apply visitor to all the added options
+       */
+      void apply_visitor( Visitor & );
 
    private:
       boost::program_options::options_description bpo_desc_;

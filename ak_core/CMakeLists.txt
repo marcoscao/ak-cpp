@@ -8,6 +8,7 @@ set( SOURCES
    ParseOptionsBase.cpp
    SqlSystem.cpp
    Utils.cpp
+   Visitor.cpp
    XmlManager.cpp
 )
 

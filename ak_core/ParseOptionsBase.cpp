@@ -2,6 +2,7 @@
 #include "Exception.h"
 #include "LogSystem.h"
 #include "Option.h"
+#include "Visitor.h"
 
 #include <iostream>
 
@@ -129,6 +130,13 @@ namespace ak {
       } 
    }
 
+   void ParseOptionsBase::apply_visitor( Visitor & v )
+   {
+      LOG_D( "Applying visitor typeid:", typeid(v).name(), "to all the added options" )
+      for( auto i : added_options_ ) {
+         i.second->accept( v );
+      }
+   }
 }
 
 

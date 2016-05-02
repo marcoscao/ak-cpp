@@ -10,8 +10,6 @@ namespace ak { namespace gen {
    {
    }
 
-
-
    Option * SourcesOp::create()
    {
       return new SourcesOp();
@@ -45,10 +43,11 @@ namespace ak { namespace gen {
          LOG_I( "Iterating over source path", i );
          LOG_CONSOLE( "\nIterating over source path", i + "..." );
          
-         //stats st = traverse_source_path_( i );
+         stats st = traverse_source_path_( i );
+         traverse_source_path_( i );
          
-         //LOG_I( "Source Path", i, "has", st.files, "files and ", st.folders, "folders which occupies", ak::util::to_mb( st.size), "Mb" );
-         //LOG_CONSOLE( "  Source Path", i, "has", st.files, "files and ", st.folders, "folders which occupies", ak::util::to_mb( st.size), "Mb" );
+         LOG_I( "Source Path", i, "has", st.files, "files and ", st.folders, "folders which occupies", ak::util::to_mb( st.size), "Mb" );
+         LOG_CONSOLE( "  Source Path", i, "has", st.files, "files and ", st.folders, "folders which occupies", ak::util::to_mb( st.size), "Mb" );
       }
    }
 
@@ -57,54 +56,54 @@ namespace ak { namespace gen {
       return sources_paths_;
    }
 
-   // SourcesCmd::stats SourcesCmd::traverse_source_path_( FileSystem::f_type const & sp )
-   // {
-   //    FileSystem fs;
-   //    stats st;
-   //
-   //    if( fs.is_folder( sp ) == false ) {
-   //        LOG_D( "source path:", sp, "is not a directory");
-	//   return st;
-   //    }
-   //   
-   //    LOG_D( "traversing path:",sp );
-   //    
-   //    if( using_verbose_ ) 
-   //       LOG_CONSOLE( "  - Processing folder:", sp, "..." );
-   //
-   //    FileSystem::DirContainer ct = fs.get_items( sp );
-   //
-   //    for( FileSystem::f_type & i : ct ) {
-   //       //LOG_T( "traverse_source_path found item: ", i );
-   //
-   //       if( fs.is_file( i ) ) {
-   //          LOG_I( "found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
-   //          
-   //          if( using_verbose_ )
-   //             LOG_CONSOLE( "    - found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
-   //          
-   //          st.size += fs.size(i);
-   //          st.files++;
-   //       }
-   //
-   //       if( fs.is_folder( i ) ) {
-   //          LOG_T("traverse going down folder: ", i);
-   //          
-   //          st.folders++;
-   //
-   //          stats st_child = traverse_source_path_( i );
-   //          
-   //          st=st + st_child;
-   //       }
-   //    }
-   //
-   //    LOG_I( "Folder", sp.filename(), "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
-   //    
-   //    if( using_verbose_ )
-   //       LOG_CONSOLE( "   Folder", sp.filename(), "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
-   //
-   //    return st;
-   // }
+   SourcesOp::stats SourcesOp::traverse_source_path_( FileSystem::f_type const & sp )
+   {
+       FileSystem fs;
+       stats st;
+   
+      if( fs.is_folder( sp ) == false ) {
+         LOG_CONSOLE( "Source path:", sp, "is not a directory");
+         LOG_I( "Source path:", sp, "is not a directory");
+         return st;
+      }
+      
+      LOG_D( "traversing path:",sp );
+       
+      if( using_verbose_ ) 
+         LOG_CONSOLE( "  - Processing folder:", sp, "..." );
+   
+      FileSystem::DirContainer ct = fs.get_items( sp );
+   
+      for( FileSystem::f_type & i : ct ) {
+         LOG_T( "traverse_source_path found item: ", i );
+   
+         if( fs.is_file( i ) ) {
+            LOG_I( "found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
+
+            if( using_verbose_ )
+               LOG_CONSOLE( "    - found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
+
+            st.size += fs.size(i);
+            st.files++;
+         }
+   
+         if( fs.is_folder( i ) ) {
+            LOG_T("traverse going down folder: ", i);
+             
+            st.folders++;
+   
+            stats st_child = traverse_source_path_( i );
+            st=st + st_child;
+         }
+      }
+   
+      LOG_I( "Folder", sp.filename(), "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
+       
+      if( using_verbose_ )
+         LOG_CONSOLE( "   Folder", sp.filename(), "has", st.files, "files and ", st.folders, "folders and occupies", ak::util::to_mb( st.size), "Mb" );
+   
+      return st;
+   }
 
 } }
 
