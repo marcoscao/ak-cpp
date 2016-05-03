@@ -2,6 +2,7 @@ include_directories( "${SQLITE3_INCLUDE_DIRS}")
 
 set( SOURCES
    AppManager.cpp
+   Command.cpp
    Exception.cpp
    FileSystem.cpp
    Option.cpp

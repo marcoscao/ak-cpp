@@ -23,7 +23,10 @@ namespace ak {
             SOURCES_OP_ID = 100,
             HELP_OP_ID,
             VERBOSE_OP_ID,
-            VERSION_OP_ID
+            VERSION_OP_ID,
+            MEDIA_OP_ID,                  // "audio", "art", "lyrics", "video", "partitures", ...
+            //MEDIA_MODE_OP_ID,             // "default", "all", "customized"
+            //MEDIA_FILES_TYPES_OP_ID       // "flac;mp3;aiff;wav;"
          };
 
          ParseOptions();

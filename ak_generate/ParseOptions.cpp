@@ -1,5 +1,7 @@
 #include "ParseOptions.h"
+#include "CollectDataCmd.h"
 #include "HelpOp.h"
+#include "MediaOp.h"
 #include "SourcesOp.h"
 #include "VerboseOp.h"
 #include "VersionOp.h"
@@ -26,6 +28,9 @@ namespace ak { namespace gen {
       f.register_item< VerboseOp >( VERBOSE_OP_ID );
       f.register_item< VersionOp >( VERSION_OP_ID );
       //f.register_item< VersionOp >( DRY_RUN_OP_ID );
+      f.register_item< MediaOp >( MEDIA_OP_ID );
+      //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
+      //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
    }
 
    void ParseOptions::execute() {
@@ -52,30 +57,10 @@ namespace ak { namespace gen {
          return;
       }
 
-      execute_option_if( SOURCES_OP_ID );
+      //execute_option_if( SOURCES_OP_ID );
+      CollectDataCmd cd_cmd;
+      cd_cmd.execute( *this );
    }
-
-   // void ProgramOptions::help_op_callback_()
-   // {
-   //    cout << "ak_generate " << endl;
-   //    version_op_callback_();
-   //
-   //    cout << endl << endl;
-   //    cout << "   usage  ak_generate -source_path [ --source_path ... ]"; 
-   //    cout << endl << endl;
-   //    cout << "   # example 1: Copyng from different sources" << endl;
-   //    cout << "   ak_generate -s /Vol/media/a -s /Vol/media/d" << endl;
-   //    cout << endl << endl;
-   //
-   //    print_usage( "" );
-   // }
-   //
-   // void ProgramOptions::version_op_callback_()
-   // {
-   //    cout << "Built April 2016" << endl; 
-   //    cout << "version  2016.04.001" << endl;
-   // }
-   //
 
    void ParseOptions::show_current_settings_()
    {
@@ -108,6 +93,13 @@ namespace ak { namespace gen {
          LOG_CONSOLE( " - verbose :", "YES" )
       else
          LOG_CONSOLE( " - verbose :", "NO" )
+
+      //if( has_user_entered_option( MEDIA_OP_ID ) ) {
+         MediaOp * op = static_cast<MediaOp*>( option_ptr( MEDIA_OP_ID ) );
+         LOG_CONSOLE( " - media :", op->media() )
+      //}
+      //else
+      //  LOG_CONSOLE( " - media :", "default" )
 
       cout << endl;
    }

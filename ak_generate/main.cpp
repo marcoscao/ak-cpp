@@ -26,7 +26,8 @@ int main(int argc, char** argv )
 
       // Create desired options from factory registered ones
       app.add_options( { gen::ParseOptions::SOURCES_OP_ID, 
-                         gen::ParseOptions::HELP_OP_ID }, 
+                         gen::ParseOptions::HELP_OP_ID, 
+                         gen::ParseOptions::MEDIA_OP_ID }, 
                          "Basic Options" );
 
       app.add_options( { gen::ParseOptions::VERBOSE_OP_ID,  

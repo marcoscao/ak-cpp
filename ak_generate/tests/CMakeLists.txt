@@ -2,7 +2,9 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
+   ../CollectDataCmd.cpp
    ../HelpOp.cpp
+   ../MediaOp.cpp
    ../ParseOptions.cpp
    ../SourcesOp.cpp
    ../VerboseOp.cpp
