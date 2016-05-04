@@ -14,6 +14,11 @@ namespace ak {
 
    class Option;
 
+//AK_CLASS_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT_VALUE ) 
+//AK_CLASS_OPTION( MediaOp, 100, "media-type", "media", "desc media", std::string, "audio" ) 
+//AK_CLASS_OPTION( VerboseOp, 101, "verbose", "verbose", "desc verb" ) 
+   
+
    namespace gen {
 
       class ParseOptions : public ParseOptionsBase {
