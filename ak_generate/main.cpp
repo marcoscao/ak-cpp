@@ -32,6 +32,7 @@ int main(int argc, char** argv )
 
       app.add_options( { gen::ParseOptions::VERBOSE_OP_ID,  
                          gen::ParseOptions::VERSION_OP_ID }, 
+                         gen::ParseOptions::CHUNK_SIZE_OP_ID }, 
                          "Extended Options" );
       
       LOG_I( "Going to execute" );

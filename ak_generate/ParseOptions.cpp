@@ -1,4 +1,5 @@
 #include "ParseOptions.h"
+#include "ChunkOp.h"
 #include "CollectDataCmd.h"
 #include "HelpOp.h"
 #include "MediaOp.h"
@@ -29,6 +30,7 @@ namespace ak { namespace gen {
       f.register_item< VersionOp >( VERSION_OP_ID );
       //f.register_item< VersionOp >( DRY_RUN_OP_ID );
       f.register_item< MediaOp >( MEDIA_OP_ID );
+      f.register_item< ChunkOp >( CHUNK_SIZE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
    }

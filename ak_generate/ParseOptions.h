@@ -27,6 +27,7 @@ namespace ak {
             MEDIA_OP_ID,                  // "audio", "art", "lyrics", "video", "partitures", ...
             //MEDIA_MODE_OP_ID,             // "default", "all", "customized"
             //MEDIA_FILES_TYPES_OP_ID       // "flac;mp3;aiff;wav;"
+            CHUNK_SIZE_OP_ID,             // chunk size
          };
 
          ParseOptions();
