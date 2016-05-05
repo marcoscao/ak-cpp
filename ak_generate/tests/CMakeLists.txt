@@ -7,7 +7,7 @@ set( SOURCES
    ../HelpOp.cpp
    ../MediaOp.cpp
    ../ParseOptions.cpp
-   ../SourcesOp.cpp
+#   ../SourcesOp.cpp
    ../VerboseOp.cpp
    ../VersionOp.cpp
    test_options.cpp

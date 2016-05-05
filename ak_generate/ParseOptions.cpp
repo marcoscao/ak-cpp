@@ -3,7 +3,7 @@
 #include "CollectDataCmd.h"
 #include "HelpOp.h"
 #include "MediaOp.h"
-#include "SourcesOp.h"
+//#include "SourcesOp.h"
 #include "VerboseOp.h"
 #include "VersionOp.h"
 
@@ -24,7 +24,7 @@ namespace ak { namespace gen {
 
    void ParseOptions::register_options( factory<Option> & f )
    {
-      f.register_item< SourcesOp >( SOURCES_OP_ID );  
+      f.register_item< SourcesOp >( SourcesOp::ID ); //SOURCES_OP_ID );  
       f.register_item< HelpOp >( HELP_OP_ID );
       f.register_item< VerboseOp >( VERBOSE_OP_ID );
       f.register_item< VersionOp >( VERSION_OP_ID );
@@ -77,7 +77,7 @@ namespace ak { namespace gen {
          SourcesOp * op = static_cast<SourcesOp*>( option_ptr( SOURCES_OP_ID ) );
 
           stringstream ss;
-          auto const & v = op->sources();
+          auto const & v = op->get_data(); //op->sources();
           auto it = begin(v);
           do {
              ss << "\"" << *it << "\"";

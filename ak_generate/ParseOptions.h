@@ -16,18 +16,26 @@ namespace ak {
 
 //AK_CLASS_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT_VALUE ) 
 //AK_CLASS_OPTION( MediaOp, 100, "media-type", "media", "desc media", std::string, "audio" ) 
-AK_MULTIPLE_OPTION( SourcesOp, 100, "source-path,s", "sources", "Sources desc", std::string ) 
-   
 
-   namespace gen {
+  namespace gen {
+
+	  enum GenOptionsIDs {
+		  SOURCES_OP_ID = 100,
+		  HELP_OP_ID,
+	  };
+
+//AK_MULTIPLE_OPTION( SourcesOp, 100, "source-path,s", "sources", "Sources desc", std::string ) 
+AK_DEFINE_OPTION_MULTIPLE( SourcesOp, SOURCES_OP_ID, "source-path,s", "sources", "Sources desc", std::string ) 
+//AK_DEFINE_OPTION_MULTIPLE( HelpOp, HRLP_OP_ID, "help,h", "help", "Help" ) 
+
 
       class ParseOptions : public ParseOptionsBase {
       public:
          
          enum OptionsIds {
-            SOURCES_OP_ID = 100,
-            HELP_OP_ID,
-            VERBOSE_OP_ID,
+            //SOURCES_OP_ID = 100,
+            HELP_OP_ID = 101,
+            VERBOSE_OP_ID = 102,
             VERSION_OP_ID,
             MEDIA_OP_ID,                  // "audio", "art", "lyrics", "video", "partitures", ...
             //MEDIA_MODE_OP_ID,             // "default", "all", "customized"

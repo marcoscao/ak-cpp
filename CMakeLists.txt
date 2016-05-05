@@ -18,7 +18,7 @@ SET( CMAKE_CXX_COMPILER "g++" )
 #gcc
 #SET( CMAKE_CXX_COMPILER "g++-mp-4.9" )
 
-SET( CMAKE_CXX_FLAGS "-std=c++11" )
+SET( CMAKE_CXX_FLAGS "-std=c++11 -g" )
 
 
 #
@@ -67,6 +67,9 @@ if( ${CYGWIN} )
 
    set( AK_BOOST_TEST_LIB 
             boost_unit_test_framework )
+
+	add_definitions( -D_USING_CYGWIN_ )
+
 endif()
 
 

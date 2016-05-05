@@ -8,7 +8,7 @@ set( SOURCES
    main.cpp
    MediaOp.cpp
    ParseOptions.cpp
-   SourcesOp.cpp
+#   SourcesOp.cpp
    VerboseOp.cpp
    VersionOp.cpp
 )

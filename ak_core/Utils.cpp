@@ -1,8 +1,16 @@
 #include "Utils.h"
-#include <boost/date_time.hpp>
+
+
 #include <algorithm>
 #include <cctype>
 #include <sstream>
+
+#ifndef _USING_CYGWIN_
+	#include <boost/date_time.hpp>
+#else
+	#include <iostream>
+#endif
+
 
 using namespace std;
 
@@ -11,8 +19,14 @@ namespace ak { namespace util {
 
    std::string time_now()
    {
+
+#ifndef _USING_CYGWIN_
       boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
       return boost::posix_time::to_iso_extended_string( now );
+#else
+	return "TODO on cygwin";
+#endif
+
    }
 
    long to_kb( long bytes )

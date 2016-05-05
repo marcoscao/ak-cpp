@@ -66,7 +66,7 @@ namespace ak {
       {
          auto it = registered_.find( id );
          if( it == registered_.end() )
-            throw ak_exception( "id: " + std::to_string(id) + " not registered when creating item" );
+            throw ak_exception( "id: " + std::to_string(id) + " not registered while creating item" );
             
          T * p = it->second();
          if( p == nullptr )

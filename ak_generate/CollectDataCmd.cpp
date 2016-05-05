@@ -1,7 +1,7 @@
 #include "CollectDataCmd.h"
 #include "ak_core/LogSystem.h"
 #include "ParseOptions.h"
-#include "SourcesOp.h"
+//#include "SourcesOp.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ namespace ak { namespace gen {
       if( pob.has_user_entered_option( ParseOptions::VERBOSE_OP_ID ) )
          using_verbose_ = true;
 
-      SourcesOp::SourcesCt const & ct = static_cast<SourcesOp*>( pob.option_ptr( ParseOptions::SOURCES_OP_ID ) )->sources();
+      SourcesOp::DATA const & ct = static_cast<SourcesOp*>( pob.option_ptr( SOURCES_OP_ID ) )->get_data();
       for( auto i : ct ) {
 
          LOG_I( "Iterating over source path", i );
