@@ -81,22 +81,30 @@ class SystemOption : public Option {
 	virtual std::string description() { return DESC } \
 
 
-#define AK_CLASS_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT_VALUE ) \
-class CLASS_NAME : public Option
+//#define AK_CLASS_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT_VALUE ) 
+
+#define AK_MULTIPLE_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE ) \
+class CLASS_NAME : public Option { \
 public: \
-	CLASS_NAME() : data_( VAR_DEFAULT_VALUE ) { } \
+        using DATA = std::vector< VAR_TYPE >; \
+\
+	 /*CLASS_NAME() : data_( VAR_DEFAULT_VALUE ) { }*/ \
+	CLASS_NAME() : data_() { } \
 	int id() { return ID; } \
 	virtual std::string cmdline_id() { return CMDLINE_ID; } \
-	virtual std::string name() { return NAME } \
-	virtual std::string description() { return DESC } \
-	virtual ParseOptionsBase::StorageType * storage_type() { return data_; } \
-	VAR_TYPE get_data() { return data_; } \
+	virtual std::string name() { return NAME; } \
+	virtual std::string description() { return DESC; } \
+	virtual ParseOptionsBase::StorageType * storage_type() \
+         { \
+            return ParseOptionsBase::set_multiple< VAR_TYPE >( &data_ ); \
+         } \
+	DATA get_data() { return data_; } \
 	\
 private: \
-	VAR_TYPE data_; \
-}; \
-\
-factory<Option>::instance().register_item< CLASS_NAME >( ID );
+         DATA data_; \
+}; 
+
+//factory<Option>::instance().register_item< CLASS_NAME >( ID );
 
 
 

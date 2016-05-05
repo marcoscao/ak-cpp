@@ -16,7 +16,7 @@ namespace ak {
 
 //AK_CLASS_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT_VALUE ) 
 //AK_CLASS_OPTION( MediaOp, 100, "media-type", "media", "desc media", std::string, "audio" ) 
-//AK_CLASS_OPTION( VerboseOp, 101, "verbose", "verbose", "desc verb" ) 
+AK_MULTIPLE_OPTION( SourcesOp, 100, "source-path,s", "sources", "Sources desc", std::string ) 
    
 
    namespace gen {

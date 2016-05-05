@@ -2,6 +2,7 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
+   ../ChunkOp.cpp
    ../CollectDataCmd.cpp
    ../HelpOp.cpp
    ../MediaOp.cpp

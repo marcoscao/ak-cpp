@@ -35,9 +35,9 @@ namespace ak { namespace gen {
       LOG_CONSOLE("This is the Chunk size" )      
    }
 
-   std::string ChunkOp::media() const
+   int ChunkOp::chunk_size() const
    {
-      return media_;
+      return chunk_size_;
    }
 
 } }

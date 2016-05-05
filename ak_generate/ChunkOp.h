@@ -22,7 +22,7 @@ namespace ak { namespace gen {
 
       virtual void execute( ParseOptionsBase const & );
 
-      std::string media() const;
+      int chunk_size() const;
  
    private:
       //! chunk size in bytes
