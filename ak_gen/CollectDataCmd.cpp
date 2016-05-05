@@ -24,7 +24,7 @@ namespace ak { namespace gen {
       //LOG_CONSOLE("Great!! doing source-path stuff" )      
       LOG_I( "Executing Collect Data Command" )
    
-      if( pob.has_user_entered_option( ParseOptions::VERBOSE_OP_ID ) )
+      if( pob.has_user_entered_option( VERBOSE_OP_ID ) )
          using_verbose_ = true;
 
       SourcesOp::DATA const & ct = static_cast<SourcesOp*>( pob.option_ptr( SOURCES_OP_ID ) )->get_data();

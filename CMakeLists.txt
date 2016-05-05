@@ -97,7 +97,7 @@ message( "* ak: sqlite3 libraries: ${SQLITE3_LIBRARIES}" )
 
 
 add_subdirectory( ak_core )
-add_subdirectory( ak_generate )
+add_subdirectory( ak_gen )
 add_subdirectory( ak_sync )
 add_subdirectory( ak_query )
 

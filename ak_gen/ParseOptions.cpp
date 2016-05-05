@@ -1,11 +1,11 @@
 #include "ParseOptions.h"
 #include "ChunkOp.h"
 #include "CollectDataCmd.h"
-#include "HelpOp.h"
+//#include "HelpOp.h"
 #include "MediaOp.h"
 //#include "SourcesOp.h"
-#include "VerboseOp.h"
-#include "VersionOp.h"
+//#include "VerboseOp.h"
+//#include "VersionOp.h"
 
 #include "ak_core/Factory.h"
 #include "ak_core/FileSystem.h"
@@ -24,7 +24,7 @@ namespace ak { namespace gen {
 
    void ParseOptions::register_options( factory<Option> & f )
    {
-      f.register_item< SourcesOp >( SourcesOp::ID ); //SOURCES_OP_ID );  
+      f.register_item< SourcesOp >( SOURCES_OP_ID );  
       f.register_item< HelpOp >( HELP_OP_ID );
       f.register_item< VerboseOp >( VERBOSE_OP_ID );
       f.register_item< VersionOp >( VERSION_OP_ID );

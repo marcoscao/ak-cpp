@@ -22,11 +22,15 @@ namespace ak {
 	  enum GenOptionsIDs {
 		  SOURCES_OP_ID = 100,
 		  HELP_OP_ID,
+                  VERBOSE_OP_ID,
+                  VERSION_OP_ID,
 	  };
 
 //AK_MULTIPLE_OPTION( SourcesOp, 100, "source-path,s", "sources", "Sources desc", std::string ) 
-AK_DEFINE_OPTION_MULTIPLE( SourcesOp, SOURCES_OP_ID, "source-path,s", "sources", "Sources desc", std::string ) 
-//AK_DEFINE_OPTION_MULTIPLE( HelpOp, HRLP_OP_ID, "help,h", "help", "Help" ) 
+AK_DEFINE_OPTION_WITH_MULTIPLE_VALUES( SourcesOp, SOURCES_OP_ID, "source-path,s", "sources", "Sources desc", std::string ) 
+AK_DEFINE_OPTION( HelpOp, HELP_OP_ID, "help,h", "help", "Help" ) 
+AK_DEFINE_OPTION( VerboseOp, VERBOSE_OP_ID, "verbose", "verbose", "Verbose mode" ) 
+AK_DEFINE_OPTION( VersionOp, VERSION_OP_ID, "version,v", "version", "Version info" ) 
 
 
       class ParseOptions : public ParseOptionsBase {
@@ -34,9 +38,9 @@ AK_DEFINE_OPTION_MULTIPLE( SourcesOp, SOURCES_OP_ID, "source-path,s", "sources",
          
          enum OptionsIds {
             //SOURCES_OP_ID = 100,
-            HELP_OP_ID = 101,
-            VERBOSE_OP_ID = 102,
-            VERSION_OP_ID,
+            //HELP_OP_ID = 101,
+            //VERBOSE_OP_ID = 102,
+            //VERSION_OP_ID,
             MEDIA_OP_ID,                  // "audio", "art", "lyrics", "video", "partitures", ...
             //MEDIA_MODE_OP_ID,             // "default", "all", "customized"
             //MEDIA_FILES_TYPES_OP_ID       // "flac;mp3;aiff;wav;"

@@ -72,7 +72,7 @@ namespace ak {
          if( p == nullptr )
             throw ak_exception( "Something wrong creating item id: " + std::to_string(id) );
 
-         p->set_registered_id_( id );
+         //p->set_registered_id_( id );
 
          instances_.push_back( std::shared_ptr<T>( p ) );
            

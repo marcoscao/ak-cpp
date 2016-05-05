@@ -13,7 +13,7 @@ namespace ak {
       return registered_id_;
    }
 
-   void Option::set_registered_id_( int id )
+   void Option::set_registered_id( int id )
    {
       registered_id_ = id;
    }
@@ -36,6 +36,10 @@ namespace ak {
    void Option::accept( Visitor & v ) 
    { 
       v.visit( *this );
+   }
+
+   void Option::execute( ParseOptionsBase const & )
+   {
    }
 
 }
