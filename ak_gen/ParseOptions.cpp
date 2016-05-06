@@ -1,8 +1,8 @@
 #include "ParseOptions.h"
-#include "ChunkOp.h"
+//#include "ChunkOp.h"
 #include "CollectDataCmd.h"
 //#include "HelpOp.h"
-#include "MediaOp.h"
+//#include "MediaOp.h"
 //#include "SourcesOp.h"
 //#include "VerboseOp.h"
 //#include "VersionOp.h"
@@ -30,7 +30,7 @@ namespace ak { namespace gen {
       f.register_item< VersionOp >( VERSION_OP_ID );
       //f.register_item< VersionOp >( DRY_RUN_OP_ID );
       f.register_item< MediaOp >( MEDIA_OP_ID );
-      f.register_item< ChunkOp >( CHUNK_SIZE_OP_ID );
+      //f.register_item< ChunkOp >( CHUNK_SIZE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
    }
@@ -68,6 +68,10 @@ namespace ak { namespace gen {
    {
       cout << endl;
       LOG_CONSOLE( "Going to execute with the following options\n" )
+
+		CurrentSettingsVisitor cs;
+
+	  apply
 
       //if( has_entered_option("dry-run") )
       //   LOG_CONSOLE( " - dry-run mode :", "YES" )

@@ -31,6 +31,7 @@ AK_DEFINE_OPTION_WITH_MULTIPLE_VALUES( SourcesOp, SOURCES_OP_ID, "source-path,s"
 AK_DEFINE_OPTION( HelpOp, HELP_OP_ID, "help,h", "help", "Help" ) 
 AK_DEFINE_OPTION( VerboseOp, VERBOSE_OP_ID, "verbose", "verbose", "Verbose mode" ) 
 AK_DEFINE_OPTION( VersionOp, VERSION_OP_ID, "version,v", "version", "Version info" ) 
+AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( SourcesOp, SOURCES_OP_ID, "source-path,s", "sources", "Sources desc", std::string ) 
 
 
       class ParseOptions : public ParseOptionsBase {
