@@ -11,10 +11,10 @@ using namespace ak;
 
 int main(int argc, char** argv ) 
 {
-   LogSystem::get().initialize( "ak_generate.log", LogSystem::Level::Debug );
+   LogSystem::get().initialize( "_ak_gen.log", LogSystem::Level::Debug );
 
    LOG_I( "\n-------------------------------------------------------")
-   LOG_I( "Starting ak_generate" );
+   LOG_I( "Starting ak_gen" );
 
    LOG_CONSOLE("");
 
@@ -26,13 +26,15 @@ int main(int argc, char** argv )
 
       // Create desired options from factory registered ones
       app.add_options( { gen::SOURCES_OP_ID, 
-                         gen::HELP_OP_ID, 
-                         gen::ParseOptions::MEDIA_OP_ID }, 
+                         gen::HELP_OP_ID,
+                         //gen::ParseOptions::MEDIA_OP_ID }, 
+                         },
                          "Basic Options" );
 
       app.add_options( { gen::VERBOSE_OP_ID,  
                          gen::VERSION_OP_ID, 
-                         gen::ParseOptions::CHUNK_SIZE_OP_ID }, 
+                         //gen::ParseOptions::CHUNK_SIZE_OP_ID }, 
+                         },
                          "Extended Options" );
       
       LOG_I( "Going to execute" );
@@ -52,7 +54,7 @@ int main(int argc, char** argv )
       cout << endl << e.what() << endl;
    }
 
-   LOG_I( "Finished ak_generate" );
+   LOG_I( "Finished ak_gen" );
    LOG_I( "-------------------------------------------------------")
 
    LOG_CONSOLE("");

@@ -1,4 +1,5 @@
 #include "Visitor.h"
+#include "LogSystem.h"
 #include "Option.h"
 
 namespace ak {
@@ -7,10 +8,6 @@ namespace ak {
    {
    }
 
-   void Visitor::visit( Option & op ) 
-   { 
-      
-   }
 
 }
 

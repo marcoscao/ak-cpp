@@ -8,8 +8,8 @@ namespace ak {
    class Visitor {
    public:
       Visitor();
-   
-      virtual void visit( Option & );
+
+      virtual void visit( Option & ) = 0;
    };
 
 

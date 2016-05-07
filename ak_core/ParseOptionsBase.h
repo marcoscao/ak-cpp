@@ -1,6 +1,8 @@
 #ifndef AK_GENERATE_PARSE_OPTIONS_BASE__
 #define AK_GENERATE_PARSE_OPTIONS_BASE__
 
+#include "Exception.h"
+
 #include <boost/program_options.hpp>
 
 #include <functional>
@@ -33,7 +35,8 @@ namespace ak {
       /*
        * User register its options
        */
-      virtual void register_options( factory<Option> & ) = 0;
+      //virtual void register_options( factory<Option> & ) = 0;
+      virtual void register_options( ) = 0;
 
 
       /*
@@ -138,14 +141,32 @@ namespace ak {
        * it throws if option is not register
        * Returns true if option has been executed
        */
-      bool execute_option_if( int registered_id, bool force = false );
+      // bool execute_option_if( int registered_id, bool force = false );
 
       /*
        * Returns Option* instance associtated to registered_id
        * It throws if no registered_id has been added to map
        */
-      Option * option_ptr( int registered_id ) const;
+      //Option * option_ptr( int registered_id ) const;
 
+      template< typename T = Option>
+      const T * option_ptr( int registered_id ) const
+      {
+         auto it = added_options_.find( registered_id );
+         if ( it == added_options_.end() )
+            throw ak_exception( "no registered_id to get its option_ptr" );
+
+         return static_cast< T const * >( it->second );
+      }
+
+      /*
+       * Non const version
+       */
+      template< typename T = Option>
+      T * option_ptr( int registered_id ) 
+      {
+         return const_cast<T*>( static_cast<const ParseOptionsBase*>(this)->option_ptr<T>( registered_id ) );
+      }
 
       template< typename T>
       T option_value( std::string const & op_name ) const

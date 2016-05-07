@@ -1,11 +1,8 @@
 #include "ParseOptions.h"
-//#include "ChunkOp.h"
 #include "CollectDataCmd.h"
-//#include "HelpOp.h"
-//#include "MediaOp.h"
-//#include "SourcesOp.h"
-//#include "VerboseOp.h"
-//#include "VersionOp.h"
+#include "CurrentSettingsVisitor.h"
+#include "HelpCmd.h"
+#include "VersionCmd.h"
 
 #include "ak_core/Factory.h"
 #include "ak_core/FileSystem.h"
@@ -22,13 +19,14 @@ namespace ak { namespace gen {
    {
    }
 
-   void ParseOptions::register_options( factory<Option> & f )
+   void ParseOptions::register_options( )
    {
+      Factory<Option> & f = Factory<Option>::instance();
+
       f.register_item< SourcesOp >( SOURCES_OP_ID );  
       f.register_item< HelpOp >( HELP_OP_ID );
       f.register_item< VerboseOp >( VERBOSE_OP_ID );
       f.register_item< VersionOp >( VERSION_OP_ID );
-      //f.register_item< VersionOp >( DRY_RUN_OP_ID );
       f.register_item< MediaOp >( MEDIA_OP_ID );
       //f.register_item< ChunkOp >( CHUNK_SIZE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
@@ -39,18 +37,26 @@ namespace ak { namespace gen {
 
       // force to show always except when requesting only version
       // in such case show it and exit
-      execute_option_if( VERSION_OP_ID, true );
-
-      if( has_user_entered_option( VERSION_OP_ID ) )
-         return;
+      //execute_option_if( VERSION_OP_ID, true );
 
       if( no_user_options() ) {
          LOG_CONSOLE("Please run with --help or -h to display correct usage and available options.");
          return;
       }
 
-      if( execute_option_if( HELP_OP_ID ) )
+      if( has_user_entered_option( VERSION_OP_ID ) ) {
+         VersionCmd cmd;
+         cmd.execute(*this);
          return;
+      }
+
+      //if( execute_option_if( HELP_OP_ID ) )
+      //   return;
+      if( has_user_entered_option( HELP_OP_ID ) ) {
+         HelpCmd cmd;
+         cmd.execute( *this );
+         return;
+      }
       
       show_current_settings_();
 
@@ -69,44 +75,10 @@ namespace ak { namespace gen {
       cout << endl;
       LOG_CONSOLE( "Going to execute with the following options\n" )
 
-		CurrentSettingsVisitor cs;
+      CurrentSettingsVisitor cs( *this );
+      apply_visitor( cs );
 
-	  apply
-
-      //if( has_entered_option("dry-run") )
-      //   LOG_CONSOLE( " - dry-run mode :", "YES" )
-	 
-      if( has_user_entered_option( SOURCES_OP_ID ) ) {
-         
-         SourcesOp * op = static_cast<SourcesOp*>( option_ptr( SOURCES_OP_ID ) );
-
-          stringstream ss;
-          auto const & v = op->get_data(); //op->sources();
-          auto it = begin(v);
-          do {
-             ss << "\"" << *it << "\"";
-      
-            if( ++it != end(v) )
-              ss << endl << "                 ";
-     
-          } while( it != end(v) );
-      
-          LOG_CONSOLE( " -", op->name(), ":", ss.str() )
-      }
-
-      
-      if( has_user_entered_option( VERBOSE_OP_ID ) )
-         LOG_CONSOLE( " - verbose :", "YES" )
-      else
-         LOG_CONSOLE( " - verbose :", "NO" )
-
-      //if( has_user_entered_option( MEDIA_OP_ID ) ) {
-         MediaOp * op = static_cast<MediaOp*>( option_ptr( MEDIA_OP_ID ) );
-         LOG_CONSOLE( " - media :", op->media() )
-      //}
-      //else
-      //  LOG_CONSOLE( " - media :", "default" )
-
+      LOG_CONSOLE( cs.current_settings().str() )
       cout << endl;
    }
 

@@ -65,19 +65,19 @@ namespace ak {
       return bpo_vm_.count( it->second->name() );
    } 
 
-   bool ParseOptionsBase::execute_option_if( int registered_id, bool force ) 
-   {
-      auto it = added_options_.find( registered_id );
-      if( it == added_options_.end() )
-         throw ak_exception("no registerd option id: " + std::to_string(registered_id) + " while trying to execute option" );
-
-      if( bpo_vm_.count( it->second->name() )  || force ) {
-         it->second->execute( *this );
-         return true;
-      }
-
-      return false;
-   } 
+   // bool ParseOptionsBase::execute_option_if( int registered_id, bool force ) 
+   // {
+   //    auto it = added_options_.find( registered_id );
+   //    if( it == added_options_.end() )
+   //       throw ak_exception("no registerd option id: " + std::to_string(registered_id) + " while trying to execute option" );
+   //
+   //    if( bpo_vm_.count( it->second->name() )  || force ) {
+   //       it->second->execute( *this );
+   //       return true;
+   //    }
+   //
+   //    return false;
+   // } 
 
    // bool ParseOptionsBase::has_user_entered_option( std::string const & op_name ) const
    // {
@@ -95,14 +95,14 @@ namespace ak {
       cout << bpo_desc_ << endl;
    }
       
-   Option * ParseOptionsBase::option_ptr( int registered_id ) const
-   {
-      auto it = added_options_.find( registered_id );
-      if ( it == added_options_.end() )
-         throw ak_exception( "no registered_id to get its option_ptr" );
-
-      return it->second;
-   }
+   // Option * ParseOptionsBase::option_ptr( int registered_id ) const
+   // {
+   //    auto it = added_options_.find( registered_id );
+   //    if ( it == added_options_.end() )
+   //       throw ak_exception( "no registered_id to get its option_ptr" );
+   //
+   //    return it->second;
+   // }
 
    void ParseOptionsBase::process_command_line_arguments( int argc, char** argv )
    {

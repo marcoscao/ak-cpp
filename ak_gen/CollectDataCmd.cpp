@@ -27,7 +27,8 @@ namespace ak { namespace gen {
       if( pob.has_user_entered_option( VERBOSE_OP_ID ) )
          using_verbose_ = true;
 
-      SourcesOp::DATA const & ct = static_cast<SourcesOp*>( pob.option_ptr( SOURCES_OP_ID ) )->get_data();
+      //SourcesOp::STORAGE_DATA const & ct = static_cast<SourcesOp*>( pob.option_ptr( SOURCES_OP_ID ) )->get_data();
+      SourcesOp::STORAGE_DATA const & ct = pob.option_ptr<SourcesOp>( SOURCES_OP_ID )->get_data();
       for( auto i : ct ) {
 
          LOG_I( "Iterating over source path", i );

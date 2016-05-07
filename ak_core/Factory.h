@@ -12,7 +12,7 @@
 namespace ak {
 
    template<typename T>
-   class factory {
+   class Factory {
    public:
 
      using RegFn = T * (*)();
@@ -20,23 +20,12 @@ namespace ak {
      using Instances = std::vector< std::shared_ptr< Option > >;
         
 
-      /*
-       * Register items
-       */
-      virtual void registrar();
+      static Factory & instance()
+      {
+         static Factory<T> f;
+         return f;
+      }
 
-
-      // void register_item( int id, RegFn fn ) 
-      // {
-      //     auto it = registered_.find( id );
-      //
-      //     if( it != registered_.end() )
-      //        throw ak_exception( "id: " + std::to_string( id ) + " previously registered while registering item" );
-      //
-      //    std::pair< typename RegMap::iterator, bool> p = registered_.insert( typename RegMap::value_type( id, fn ) );
-      //    if( p.second == false )
-      //       throw ak_exception( "Something wrong trying to register option id: " + std::to_string(id) );
-      // }
 
       /*
        * Register item id
@@ -72,7 +61,7 @@ namespace ak {
          if( p == nullptr )
             throw ak_exception( "Something wrong creating item id: " + std::to_string(id) );
 
-         //p->set_registered_id_( id );
+         p->set_registered_id_( id );
 
          instances_.push_back( std::shared_ptr<T>( p ) );
            
@@ -80,17 +69,18 @@ namespace ak {
       }
 
    private:
-      static RegMap registered_;
-      static Instances instances_;				// stores created instances to later delete
+      static RegMap registered_;       // holds registered items
+      static Instances instances_;     // stores created instances to later delete
 
+      Factory() = default;             // private constructor
    };
 
 
    template<typename T>
-   typename factory<T>::RegMap factory<T>::registered_ = factory<T>::RegMap();
+   typename Factory<T>::RegMap Factory<T>::registered_ = Factory<T>::RegMap();
 
    template<typename T>
-   typename factory<T>::Instances factory<T>::instances_ = factory<T>::Instances();
+   typename Factory<T>::Instances Factory<T>::instances_ = Factory<T>::Instances();
 
 }
 

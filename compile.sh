@@ -3,7 +3,7 @@
 echo "Compiling..."
 
 cd out
-make -j4
+make -j8
 
 
 

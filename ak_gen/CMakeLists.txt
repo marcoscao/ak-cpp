@@ -2,22 +2,18 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
-#   ChunkOp.cpp
    CollectDataCmd.cpp
-   #   HelpOp.cpp
+   HelpCmd.cpp
    main.cpp
-#   MediaOp.cpp
    ParseOptions.cpp
-#   SourcesOp.cpp
-#   VerboseOp.cpp
-#   VersionOp.cpp
+   VersionCmd.cpp
 )
 
-add_executable( ak_generate ${SOURCES} )
+add_executable( ak_gen ${SOURCES} )
 
-target_link_libraries( ak_generate akcore )
+target_link_libraries( ak_gen akcore )
 
-install( TARGETS ak_generate DESTINATION bin )
+install( TARGETS ak_gen DESTINATION bin )
 #install( FILES "${PROJECT_BINARY_DIR}/version.h" DESTINATION include )
 
 

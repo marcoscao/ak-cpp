@@ -24,7 +24,7 @@ public:
    int registered_id() const;
 
    //! "verbose"
-   virtual std::string name() = 0;
+   virtual std::string name();
 
    virtual void execute( ParseOptionsBase const & ) = 0;
 

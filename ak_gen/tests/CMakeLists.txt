@@ -2,14 +2,10 @@
 include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
-#   ../ChunkOp.cpp
    ../CollectDataCmd.cpp
-#   ../HelpOp.cpp
-#   ../MediaOp.cpp
+   ../HelpCmd.cpp
    ../ParseOptions.cpp
-#   ../SourcesOp.cpp
-#   ../VerboseOp.cpp
-#   ../VersionOp.cpp
+   ../VersionCmd.cpp
    test_options.cpp
 )
 

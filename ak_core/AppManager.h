@@ -6,9 +6,6 @@
 #include <string>
 
 namespace ak {
-
-   class Option;
-   class PO;
    
    class AppManager {
    public:
@@ -21,7 +18,7 @@ namespace ak {
       void execute( int argc, char** argv );
            
    private:
-      std::shared_ptr< factory<Option> > factory_;
+      //std::shared_ptr< factory<Option> > factory_;
       std::shared_ptr< ParseOptionsBase > parser_;
    };
 
