@@ -1,53 +1,53 @@
 # ak-cpp
 
-NOTE: 
-Although the whole project code begins to be stable is still in its first stage.
-This documentation file is still a huge draft with no useful information
+NOTE: under development beta project and documentation
 
 
-
-1. Intro
+1. Description
 2. Features
-3. Requirements
-4. Install
+3. Build
 5. TODO
 
 Appendix A: Running Tests 
 
 
 
+## 1. Description
 
-## 1. Intro
+This is the suite of ak tools to process, query and manage media files such audio ones.
+It is based on C++11/14
 
-This is the ak tools suite version based in C++11/14
 
-* ak_generate
+* ak_gen
+Process source data
 
 * ak_query
+Performs queries to processed data
 
 * ak_sync
-
+Synchronizes data between different media devices
 
 
 ## 2. Features
 
 
-## 3. Requirements
+
+## 3. Build
 
 ** Only tested in 'linux' based environments ( Apple OSX 'El Capitan' with ports usage and Windows 7 'Cygwin' )
-** Compilers tested: clang, gcc
-** C++11/14 support
+** Tested with clang and gcc compilers with C++11/14 support
+** It requires:
+   - boost libraries
+   - sqlite
+   - lxml
 
+The steps to make it work are:
 
-* boost libraries
-* sqlite
-* lxml
+1. Download / Clone the source code 
+2. run from shell
+   $./build.sh && ./compile.sh
+3. Binary files will be generated under out/bin
 
-
-
-## 4. Install
-
-$ ./build.sh && ./compile.sh
 
 
 
