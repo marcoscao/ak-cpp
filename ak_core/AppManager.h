@@ -16,6 +16,8 @@ namespace ak {
       void add_options( std::vector<int> const & ids, std::string const & group_title );
 
       void execute( int argc, char** argv );
+
+      ParseOptionsBase & options_parser( );
            
    private:
       //std::shared_ptr< factory<Option> > factory_;

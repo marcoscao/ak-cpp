@@ -47,12 +47,12 @@ namespace ak { namespace util {
    bool prompt_question( std::string const & msg, bool default_is_yes )
    {
       if( msg.empty() )
-         cout << msg << " would you like to continue ";
+         cout << msg << ">> would you like to continue ";
 
       if( default_is_yes )
-         cout << "( YES/no ) ? ";
+         cout << "[yes]/no ? : ";
       else
-         cout << "( yes/NO ) ? ";
+         cout << "yes/[no] ? : ";
 
       string s;
       getline(cin,s);

@@ -7,7 +7,9 @@ using namespace std;
 
 namespace ak { namespace gen {
    CollectDataCmd::CollectDataCmd()
-   : using_verbose_( false )
+   :  using_verbose_( false ),
+      chunk_number_( 25 ),
+      chunk_counter_(0)
    {
    }
 
@@ -27,7 +29,9 @@ namespace ak { namespace gen {
       if( pob.has_user_entered_option( VERBOSE_OP_ID ) )
          using_verbose_ = true;
 
-      //SourcesOp::STORAGE_DATA const & ct = static_cast<SourcesOp*>( pob.option_ptr( SOURCES_OP_ID ) )->get_data();
+      chunk_number_ = pob.option_data_value< ChunkNumberOp, int >( CHUNK_NUMBER_OP_ID );
+      chunk_counter_ = 0;
+
       SourcesOp::STORAGE_DATA const & ct = pob.option_ptr<SourcesOp>( SOURCES_OP_ID )->get_data();
       for( auto i : ct ) {
 
@@ -70,6 +74,7 @@ namespace ak { namespace gen {
          // }
       
          if( fs.is_file( i ) ) {
+
             LOG_I( "found file:", i.filename(), "type", i.extension(), "size", fs.size( i ) );
 
             if( using_verbose_ )
@@ -77,6 +82,13 @@ namespace ak { namespace gen {
 
             st.size += fs.size(i);
             st.files++;
+
+            if( ++chunk_counter_ > chunk_number_ ) {
+               chunk_counter_ = 0;
+               LOG_I( "Reached chunk items number. Send current package" )
+               LOG_CONSOLE( "\n  ******** Send package of", chunk_number_, "items ****************\n" )
+            }
+            
          }
    
          if( fs.is_folder( i ) ) {

@@ -174,6 +174,20 @@ namespace ak {
          return bpo_vm_[ op_name ].as<T>();
       }
 
+      template< typename T_CLASS, typename T_VAL >
+      const T_VAL option_data_value( int id ) const
+      {
+         T_CLASS const * p = option_ptr<T_CLASS>( id );
+         return bpo_vm_[ p->cmdline_id() ].template as< T_VAL >();
+         //return bpo_vm_[ p->cmdline_id ].as< T_VAL >();
+      }
+
+      template< typename T_CLASS, typename T_VAL >
+      T_VAL option_data_value( int id ) 
+      {
+         return static_cast< const ParseOptionsBase*>(this)->template option_data_value<T_CLASS,T_VAL>( id );
+      }
+
       void print_usage( const std::string & title ) const;
 
       /*

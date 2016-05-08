@@ -28,7 +28,7 @@ namespace ak { namespace gen {
       f.register_item< VerboseOp >( VERBOSE_OP_ID );
       f.register_item< VersionOp >( VERSION_OP_ID );
       f.register_item< MediaOp >( MEDIA_OP_ID );
-      //f.register_item< ChunkOp >( CHUNK_SIZE_OP_ID );
+      f.register_item< ChunkNumberOp >( CHUNK_NUMBER_OP_ID );
       //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
       //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
    }
@@ -39,8 +39,9 @@ namespace ak { namespace gen {
       // in such case show it and exit
       //execute_option_if( VERSION_OP_ID, true );
 
-      if( no_user_options() ) {
-         LOG_CONSOLE("Please run with --help or -h to display correct usage and available options.");
+      if( has_user_entered_option( HELP_OP_ID ) ) {
+         HelpCmd cmd;
+         cmd.execute( *this );
          return;
       }
 
@@ -50,13 +51,11 @@ namespace ak { namespace gen {
          return;
       }
 
-      //if( execute_option_if( HELP_OP_ID ) )
-      //   return;
-      if( has_user_entered_option( HELP_OP_ID ) ) {
-         HelpCmd cmd;
-         cmd.execute( *this );
+      if( has_user_entered_option( SOURCES_OP_ID ) == false ) {
+         LOG_CONSOLE("Please run with --help or -h to display correct usage and available options.");
          return;
       }
+
       
       show_current_settings_();
 

@@ -43,6 +43,8 @@ namespace ak { namespace gen {
 
    private:
       bool using_verbose_;
+      int chunk_number_;
+      int chunk_counter_;
 
       stats traverse_source_path_( FileSystem::f_type const & source_path );
    };

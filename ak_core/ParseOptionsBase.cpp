@@ -13,7 +13,7 @@ namespace po = boost::program_options;
 namespace ak {
 
    ParseOptionsBase::ParseOptionsBase()
-   :  bpo_desc_( "Available Options" ),
+   :  bpo_desc_( "available options" ),
       bpo_positional_(),
       bpo_vm_(),
       added_options_()
@@ -86,6 +86,10 @@ namespace ak {
 
    bool ParseOptionsBase::no_user_options( ) const
    {
+         // std::cout << "debug boost entered options size: " << bpo_vm_.size() << " items" << endl;
+         // for( auto i : bpo_vm_ ) 
+         //    std::cout << "itemm:  " << i.first << endl;
+
       return bpo_vm_.empty();
    } 
 

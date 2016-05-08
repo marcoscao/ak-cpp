@@ -1,4 +1,5 @@
 #include "ParseOptions.h"
+#include "HelpCmd.h"
 #include "ak_core/AppManager.h"
 #include "ak_core/Exception.h"
 #include "ak_core/LogSystem.h"
@@ -16,11 +17,9 @@ int main(int argc, char** argv )
    LOG_I( "\n-------------------------------------------------------")
    LOG_I( "Starting ak_gen" );
 
-   LOG_CONSOLE("");
+   AppManager app;
 
    try {
-
-      AppManager app;
 
       app.set_options_parser( new gen::ParseOptions() );
 
@@ -32,8 +31,8 @@ int main(int argc, char** argv )
                          "Basic Options" );
 
       app.add_options( { gen::VERBOSE_OP_ID,  
+                         gen::CHUNK_NUMBER_OP_ID, 
                          gen::VERSION_OP_ID, 
-                         //gen::ParseOptions::CHUNK_SIZE_OP_ID }, 
                          },
                          "Extended Options" );
       

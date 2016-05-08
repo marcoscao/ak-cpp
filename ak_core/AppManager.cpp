@@ -53,6 +53,11 @@ namespace ak {
 
       LOG_I("End execution of entered user options" )
    }
+
+   ParseOptionsBase & AppManager::options_parser( )
+   {
+      return *parser_;
+   }
         
 }
 

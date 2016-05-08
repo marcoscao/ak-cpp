@@ -21,13 +21,13 @@ public:
    int registered_id() const;
 
    //! "verbose,v"  
-   virtual std::string cmdline_id() = 0;
+   virtual std::string cmdline_id() const = 0;
 
    //! "verbose"
-   virtual std::string name() = 0;
+   virtual std::string name() const = 0;
 
    //! "verbose desc"
-   virtual std::string description() = 0;
+   virtual std::string description() const = 0;
 
    virtual ParseOptionsBase::StorageType * storage_type();
 
@@ -62,6 +62,7 @@ class SystemOption : public Option {
  * core Option sub-macros used by the final below AK_... macros to help define classes
  */
 
+
 /*
  * submacro: Starting Common option class code
  */
@@ -70,10 +71,11 @@ class CLASS_NAME : public Option { \
     template<typename> friend class factory; \
 public: \
    \
+   /*static const int REGISTERED_ID = ID;*/ \
    static Option * create() { return new CLASS_NAME(); } \
-   virtual std::string cmdline_id() { return CMDLINE_ID; } \
-   virtual std::string name() { return NAME; } \
-   virtual std::string description() { return DESC; } \
+   virtual std::string cmdline_id() const { return CMDLINE_ID; } \
+   virtual std::string name() const { return NAME; } \
+   virtual std::string description() const { return DESC; } \
    virtual void execute( ParseOptionsBase const & pob ) { ; } \
    virtual void accept( Visitor & v ) { v.visit( *this ); } 
 
@@ -110,10 +112,12 @@ private: \
 
 
 
+
+
 /*
  * Below usage final macros
+ * -------------------------
  */
-
 
 /*
  * Final Macro: defines an Option Class without vars
@@ -127,7 +131,7 @@ private: \
 /*
  * Final Macro: defines an Option class with the storage of a unique value
  */
-#define AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE ) \
+#define AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT ) \
    __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    public: \
       \
@@ -137,7 +141,7 @@ private: \
       \
       virtual ParseOptionsBase::StorageType * storage_type() \
       { \
-         return ParseOptionsBase::set_unique< VALUE_TYPE >( &storage_data_ ); \
+         return ParseOptionsBase::set_unique< VALUE_TYPE >( &storage_data_, VAR_DEFAULT ); \
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
@@ -163,6 +167,25 @@ private: \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
    //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
+
+/*
+ * Final Macro: defines an Option with multiple values
+ */
+#define AK_DEFINE_REQUIRED_OPTION_WITH_MULTIPLE_VALUES( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE ) \
+   __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+   public: \
+   \
+      using VALUE_TYPE = VAR_TYPE; \
+      using STORAGE_DATA = std::vector< VALUE_TYPE >; \
+      /*using STORAGE_FN = ParseOptionsBase::set_multiple< VALUE_TYPE >;*/ \
+      \
+      virtual ParseOptionsBase::StorageType * storage_type() \
+      { \
+         return ParseOptionsBase::set_multiple_required< VALUE_TYPE >( &storage_data_ ); \
+      } \
+      \
+   __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
+   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 
