@@ -11,12 +11,19 @@
 
 namespace ak {
 
+
+	class option_creator;
+
+
+
    template<typename T>
    class Factory {
    public:
 
      using RegFn = std::unique_ptr<T> (*)();
      using RegMap = std::unordered_map< int, RegFn >;
+	 using AA = std::unique_ptr< option_creator >;
+     using RegMap_v2 = std::unordered_map< int, AA >;
      using Instances = std::vector< std::shared_ptr< Option > >;
         
 
@@ -25,6 +32,22 @@ namespace ak {
          static Factory<T> f;
          return f;
       }
+
+	
+	  void register_item_v2( int id, std::unique_ptr< option_creator > op_creator )
+	  {
+          auto it = registered_v2_.find( id );
+
+          if( it != registered_v2_.end() )
+             throw ak_exception( "id: " + std::to_string( id ) + " previously registered while registering item" );
+
+         // Set the default callback function as D::create
+         //RegFn fn = D::create;
+         std::pair< typename RegMap_v2::iterator, bool> p = registered_v2_.insert( typename RegMap_v2::value_type( id, std::move( op_creator ) ) );
+         if( p.second == false )
+            throw ak_exception( "Something wrong trying to register option id: " + std::to_string(id) );
+
+	  }
 
 
       /*
@@ -72,18 +95,54 @@ namespace ak {
 
    private:
       static RegMap registered_;       // holds registered items
+      static RegMap_v2 registered_v2_;       // holds registered items
       static Instances instances_;     // stores created instances to later delete
 
       Factory() = default;             // private constructor
    };
 
 
+
    template<typename T>
    typename Factory<T>::RegMap Factory<T>::registered_ = Factory<T>::RegMap();
 
    template<typename T>
+   typename Factory<T>::RegMap_v2 Factory<T>::registered_v2_ = Factory<T>::RegMap_v2();
+
+   template<typename T>
    typename Factory<T>::Instances Factory<T>::instances_ = Factory<T>::Instances();
 
+
+
+
+   class option_creator {
+   public:
+	   option_creator( int id ) 
+	   {
+		   Factory<Option>::instance().register_item_v2( id, std::unique_ptr<option_creator>( this ) );
+	   }
+
+	   virtual ~option_creator() = default;
+
+	   virtual std::unique_ptr< Option > create( ) = 0;
+   };
+
+
+
+
+   template<typename T>
+	class option_creator_impl : public option_creator {
+	public:
+		option_creator_impl(int id ) 
+		: option_creator( id )
+		{
+		}
+
+		virtual std::unique_ptr< T > create()
+		{
+			return std::make_unique<T>();
+		}	
+	};
 }
 
 #endif

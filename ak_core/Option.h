@@ -10,6 +10,7 @@ namespace ak {
 
    class Visitor;
 
+
 class Option {
    template<typename> friend class Factory;
 
