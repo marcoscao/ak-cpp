@@ -36,7 +36,7 @@ namespace ak {
        * User register its options
        */
       //virtual void register_options( factory<Option> & ) = 0;
-      virtual void register_options( ) = 0;
+      // virtual void register_options( ) = 0;
 
 
       /*

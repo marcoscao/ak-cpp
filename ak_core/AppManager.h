@@ -4,6 +4,7 @@
 #include "Factory.h"
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace ak {
    
@@ -22,8 +23,11 @@ namespace ak {
    private:
       //std::shared_ptr< factory<Option> > factory_;
       std::shared_ptr< ParseOptionsBase > parser_;
+
+      static const std::vector<std::string> ff_;
    };
 
+   //const std::string AppManager::ff_ = std::string("jkjkj"); 
 }
 
 #endif

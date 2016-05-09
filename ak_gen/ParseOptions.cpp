@@ -15,23 +15,24 @@ using namespace std;
 
 namespace ak { namespace gen {
 
+
    ParseOptions::ParseOptions() 
    {
    }
 
-   void ParseOptions::register_options( )
-   {
-      Factory<Option> & f = Factory<Option>::instance();
-
-      f.register_item< SourcesOp >( SOURCES_OP_ID );  
-      f.register_item< HelpOp >( HELP_OP_ID );
-      f.register_item< VerboseOp >( VERBOSE_OP_ID );
-      f.register_item< VersionOp >( VERSION_OP_ID );
-      f.register_item< MediaOp >( MEDIA_OP_ID );
-      f.register_item< ChunkNumberOp >( CHUNK_NUMBER_OP_ID );
-      //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
-      //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
-   }
+   // void ParseOptions::register_options( )
+   // {
+   //    // Factory<Option> & f = Factory<Option>::instance();
+   //    //
+   //    // f.register_item< SourcesOp >( SOURCES_OP_ID );  
+   //    // f.register_item< HelpOp >( HELP_OP_ID );
+   //    // f.register_item< VerboseOp >( VERBOSE_OP_ID );
+   //    // f.register_item< VersionOp >( VERSION_OP_ID );
+   //    // f.register_item< MediaOp >( MEDIA_OP_ID );
+   //    // f.register_item< ChunkNumberOp >( CHUNK_NUMBER_OP_ID );
+   //    // //f.register_item< MediaOp >( MEDIA_MODE_OP_ID );
+   //    // //f.register_item< MediaOp >( MEDIA_FILES_OP_ID );
+   // }
 
    void ParseOptions::execute() {
 

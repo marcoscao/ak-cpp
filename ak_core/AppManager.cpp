@@ -21,7 +21,7 @@ namespace ak {
 
       // Call to register user options
       //parser_->register_options( *factory_ );
-      parser_->register_options( );
+      // parser_->register_options( );
    }
 
    void AppManager::add_options( std::vector<int> const & ids, std::string const & group_title )
@@ -32,7 +32,7 @@ namespace ak {
       for( auto i : ids ) {
          LOG_I( "Creating option id:", i )
          //v.push_back( factory_->create( i ) );
-         v.push_back( Factory<Option>::instance().create( i ) );
+         v.push_back( Factory<Option>::instance().create_v2( i ) );
          
       }
 

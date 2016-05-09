@@ -1,6 +1,6 @@
 #include "HelpCmd.h"
 #include "ak_core/LogSystem.h"
-#include "ParseOptions.h"
+#include "ak_core/ParseOptionsBase.h"
 
 using namespace std;
 

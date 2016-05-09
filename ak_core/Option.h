@@ -15,7 +15,7 @@ class Option {
    template<typename> friend class Factory;
 
 protected:
-   Option();
+   Option( );
 
 public:
    virtual ~Option() = default;
@@ -75,13 +75,17 @@ class CLASS_NAME : public Option { \
 public: \
    \
    /*static const int REGISTERED_ID = ID;*/ \
-   static std::unique_ptr<Option> create() { return std::make_unique<CLASS_NAME>(); } \
+   /*static std::unique_ptr<Option> create() { return std::make_unique<CLASS_NAME>(); } */  \
    virtual std::string cmdline_id() const { return CMDLINE_ID; } \
    virtual std::string name() const { return NAME; } \
    virtual std::string description() const { return DESC; } \
-   virtual void execute( ParseOptionsBase const & pob ) { ; } \
-   virtual void accept( Visitor & v ) { v.visit( *this ); } 
+   /*virtual void execute( ParseOptionsBase const & pob ) { ; } */  \
+   virtual void accept( Visitor & v ) { v.visit( *this ); } \
+   \
+private:\
+   static const option_creator_impl< CLASS_NAME > creator_;
 
+   
 
 /*
  * submacro: end common option class code
@@ -111,7 +115,8 @@ private: \
  * submacro: register option
  */
 #define __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID ) \
- Factory<Option>::instance().register_item< CLASS_NAME >( ID ); 
+const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLASS_NAME>( ID ); \
+// Factory<Option>::instance().register_item< CLASS_NAME >( ID ); 
 
 
 
@@ -128,7 +133,7 @@ private: \
 #define AK_DEFINE_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC ) \
    __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    __AK_END_DEFINE_OPTION_CLASS__( CLASS_NAME ) \
-   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -148,7 +153,7 @@ private: \
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -168,7 +173,7 @@ private: \
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -188,7 +193,7 @@ private: \
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 

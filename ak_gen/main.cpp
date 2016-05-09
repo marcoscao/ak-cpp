@@ -1,5 +1,4 @@
 #include "ParseOptions.h"
-#include "HelpCmd.h"
 #include "ak_core/AppManager.h"
 #include "ak_core/Exception.h"
 #include "ak_core/LogSystem.h"

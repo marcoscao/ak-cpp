@@ -3,12 +3,14 @@
 
 #include "ak_core/FileSystem.h"
 #include "ak_core/Command.h"
-#include "ak_core/ParseOptionsBase.h"
 
-#include <iostream>
 #include <string>
 
-namespace ak { namespace gen {
+namespace ak { 
+   
+   class ParseOptionsBase;
+   
+   namespace gen {
 
    class CollectDataCmd : public ak::Command {
    public:
