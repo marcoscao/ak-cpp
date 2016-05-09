@@ -17,15 +17,11 @@ Appendix A: Running Tests
 This is the suite of ak tools to process, query and manage media files such audio ones.
 It is based on C++11/14
 
+* ak_gen: Process source data
 
-* ak_gen
-Process source data
+* ak_query: Performs queries to processed data
 
-* ak_query
-Performs queries to processed data
-
-* ak_sync
-Synchronizes data between different media devices
+* ak_sync: Synchronizes data between different media devices
 
 
 ## 2. Features
@@ -44,8 +40,7 @@ Synchronizes data between different media devices
 The steps to make it work are:
 
 1. Download / Clone the source code 
-2. run from shell
-   $./build.sh && ./compile.sh
+2. run from shell: "./build.sh && ./compile.sh"
 3. Binary files will be generated under out/bin
 
 
@@ -53,7 +48,7 @@ The steps to make it work are:
 
 ## Appendix A. Running tests
 
-out/bin/test_sources_option --log_level=test_suite
+1. Simply run: "out/bin/test_sources_option --log_level=test_suite"
 
 
 
