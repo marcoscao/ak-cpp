@@ -27,7 +27,7 @@ namespace ak {
    void AppManager::add_options( std::vector<int> const & ids, std::string const & group_title )
    {
       LOG_I( "Creating registered options" )
-      std::vector< Option* > v;
+      std::vector< std::shared_ptr<Option> > v;
 
       for( auto i : ids ) {
          LOG_I( "Creating option id:", i )

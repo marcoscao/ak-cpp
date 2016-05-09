@@ -25,7 +25,7 @@ namespace ak {
    public:
 
       using StorageType = boost::program_options::value_semantic;
-      using OptionsList = std::vector< Option* >;
+      using OptionsList = std::vector< std::shared_ptr<Option> >;
 
 
       ParseOptionsBase();
@@ -201,7 +201,7 @@ namespace ak {
       boost::program_options::variables_map bpo_vm_;
 
       // Stores Option classes indexed by registered_id
-      using OptionsMap = std::map< int, Option* >;
+      using OptionsMap = std::map< int, std::shared_ptr<Option> >;
 
       // stores all added options.
       // note that this does not mean that the option is currently in po::vm ( passed by command line ) 

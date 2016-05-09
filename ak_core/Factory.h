@@ -15,7 +15,7 @@ namespace ak {
    class Factory {
    public:
 
-     using RegFn = T * (*)();
+     using RegFn = std::unique_ptr<T> (*)();
      using RegMap = std::unordered_map< int, RegFn >;
      using Instances = std::vector< std::shared_ptr< Option > >;
         
@@ -51,21 +51,23 @@ namespace ak {
          return false;
       }
 
-      T * create( int id )
+      std::shared_ptr<T> create( int id )
       {
          auto it = registered_.find( id );
          if( it == registered_.end() )
             throw ak_exception( "id: " + std::to_string(id) + " not registered while creating item" );
             
-         T * p = it->second();
+         std::unique_ptr<T> p = it->second();
          if( p == nullptr )
             throw ak_exception( "Something wrong creating item id: " + std::to_string(id) );
 
+         //! TODO: change id registration way
          p->set_registered_id_( id );
 
-         instances_.push_back( std::shared_ptr<T>( p ) );
+         std::shared_ptr<Option> sp( std::move( p ) );
+         instances_.push_back( sp );
            
-         return p;
+         return sp;
       }
 
    private:

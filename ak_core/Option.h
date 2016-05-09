@@ -2,6 +2,7 @@
 #define AK_CORE_OPTION_H__
 
 #include "ParseOptionsBase.h"
+#include <memory>
 #include <string>
 
 
@@ -72,7 +73,7 @@ class CLASS_NAME : public Option { \
 public: \
    \
    /*static const int REGISTERED_ID = ID;*/ \
-   static Option * create() { return new CLASS_NAME(); } \
+   static std::unique_ptr<Option> create() { return std::make_unique<CLASS_NAME>(); } \
    virtual std::string cmdline_id() const { return CMDLINE_ID; } \
    virtual std::string name() const { return NAME; } \
    virtual std::string description() const { return DESC; } \
