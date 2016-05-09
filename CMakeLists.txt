@@ -18,7 +18,7 @@ SET( CMAKE_CXX_COMPILER "g++" )
 #gcc
 #SET( CMAKE_CXX_COMPILER "g++-mp-4.9" )
 
-SET( CMAKE_CXX_FLAGS "-std=c++11 -g" )
+SET( CMAKE_CXX_FLAGS "-std=c++14 -g" )
 
 
 #

@@ -70,6 +70,7 @@ class SystemOption : public Option {
 #define __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
 class CLASS_NAME : public Option { \
     template<typename> friend class factory; \
+   friend std::unique_ptr<CLASS_NAME> std::make_unique<CLASS_NAME>(); \
 public: \
    \
    /*static const int REGISTERED_ID = ID;*/ \

@@ -150,22 +150,22 @@ namespace ak {
       //Option * option_ptr( int registered_id ) const;
 
       template< typename T = Option>
-      const T * option_ptr( int registered_id ) const
+      const T & option_ref( int registered_id ) const
       {
          auto it = added_options_.find( registered_id );
          if ( it == added_options_.end() )
             throw ak_exception( "no registered_id to get its option_ptr" );
 
-         return static_cast< T const * >( it->second );
+         return static_cast< T const & >( *it->second );
       }
 
       /*
        * Non const version
        */
       template< typename T = Option>
-      T * option_ptr( int registered_id ) 
+      T & option_ref( int registered_id ) 
       {
-         return const_cast<T*>( static_cast<const ParseOptionsBase*>(this)->option_ptr<T>( registered_id ) );
+         return const_cast<T&>( static_cast<const ParseOptionsBase*>(this)->option_ref<T>( registered_id ) );
       }
 
       template< typename T>
@@ -177,8 +177,8 @@ namespace ak {
       template< typename T_CLASS, typename T_VAL >
       const T_VAL option_data_value( int id ) const
       {
-         T_CLASS const * p = option_ptr<T_CLASS>( id );
-         return bpo_vm_[ p->cmdline_id() ].template as< T_VAL >();
+         T_CLASS const & p = option_ref<T_CLASS>( id );
+         return bpo_vm_[ p.cmdline_id() ].template as< T_VAL >();
          //return bpo_vm_[ p->cmdline_id ].as< T_VAL >();
       }
 

@@ -32,7 +32,7 @@ namespace ak { namespace gen {
       chunk_number_ = pob.option_data_value< ChunkNumberOp, int >( CHUNK_NUMBER_OP_ID );
       chunk_counter_ = 0;
 
-      SourcesOp::STORAGE_DATA const & ct = pob.option_ptr<SourcesOp>( SOURCES_OP_ID )->get_data();
+      SourcesOp::STORAGE_DATA const & ct = pob.option_ref<SourcesOp>( SOURCES_OP_ID ).get_data();
       for( auto i : ct ) {
 
          LOG_I( "Iterating over source path", i );
