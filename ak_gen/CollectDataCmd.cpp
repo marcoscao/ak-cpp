@@ -1,5 +1,6 @@
 #include "CollectDataCmd.h"
-#include "ParseOptions.h"
+#include "GenOptions.h"
+#include "ak_core/ParseOptionsBase.h"
 #include "ak_core/LogSystem.h"
 
 using namespace std;

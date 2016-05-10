@@ -3,6 +3,7 @@ include_directories( "${PROJECT_SOURCE_DIR}")
 
 set( SOURCES
    CollectDataCmd.cpp
+   GenOptions.cpp
    HelpCmd.cpp
    main.cpp
    ParseOptions.cpp
@@ -17,5 +18,5 @@ install( TARGETS ak_gen DESTINATION bin )
 #install( FILES "${PROJECT_BINARY_DIR}/version.h" DESTINATION include )
 
 
-#add_subdirectory( tests )
+add_subdirectory( tests )
 

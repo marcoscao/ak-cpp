@@ -17,8 +17,8 @@ namespace ak {
    class Option;
    class Visitor;
 
-   template<typename T=Option>
-   class factory;
+   //template<typename T=Option>
+   //class factory;
 
 
    class ParseOptionsBase {

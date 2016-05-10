@@ -1,4 +1,5 @@
 #include "ParseOptions.h"
+#include "GenOptions.h"
 #include "ak_core/AppManager.h"
 #include "ak_core/Exception.h"
 #include "ak_core/LogSystem.h"
@@ -34,7 +35,7 @@ int main(int argc, char** argv )
                          gen::VERSION_OP_ID, 
                          },
                          "Extended Options" );
-      
+
       LOG_I( "Going to execute" );
       app.execute( argc, argv );
 

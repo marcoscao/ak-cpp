@@ -11,6 +11,8 @@
 
 namespace ak {
 
+   class Option;
+
    class option_creator;
 
 
@@ -176,7 +178,7 @@ namespace ak {
             throw ak_exception( "v2: Something wrong creating item id: " + std::to_string(id) );
 
          //! TODO: change id registration way
-         //p->set_registered_id_( id );
+         p->set_registered_id_( id );
 
          std::shared_ptr< Option > sp( std::move( p ) );
          instances_.push_back( sp );
