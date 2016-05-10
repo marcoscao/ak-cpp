@@ -1,12 +1,14 @@
 #ifndef AK_CORE_APP_MANAGER_H__
 #define AK_CORE_APP_MANAGER_H__
 
-#include "Factory.h"
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace ak {
+
+	class ParseOptionsBase;
+
    
    class AppManager {
    public:
@@ -21,13 +23,10 @@ namespace ak {
       ParseOptionsBase & options_parser( );
            
    private:
-      //std::shared_ptr< factory<Option> > factory_;
       std::shared_ptr< ParseOptionsBase > parser_;
 
-      static const std::vector<std::string> ff_;
    };
 
-   //const std::string AppManager::ff_ = std::string("jkjkj"); 
 }
 
 #endif

@@ -133,7 +133,7 @@ const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_imp
 #define AK_DEFINE_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC ) \
    __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    __AK_END_DEFINE_OPTION_CLASS__( CLASS_NAME ) \
-   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -153,7 +153,7 @@ const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_imp
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -173,7 +173,7 @@ const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_imp
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 /*
@@ -193,7 +193,7 @@ const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_imp
       } \
       \
    __AK_END_DEFINE_OPTION_CLASS_WITH_VAR__( CLASS_NAME ) \
-   __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
+   //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
 
 

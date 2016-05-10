@@ -1,5 +1,8 @@
 #include "AppManager.h"
+#include "Exception.h"
+#include "Factory.h"
 #include "LogSystem.h"
+#include "Option.h"
 
 using namespace std;
 

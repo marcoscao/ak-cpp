@@ -126,8 +126,6 @@ namespace ak {
       /*
        * has user entered such option?
        */
-      //bool has_entered_option( std::string const & ) const;
-
       bool has_user_entered_option( int registered_id ) const;
 
       /*
@@ -144,10 +142,9 @@ namespace ak {
       // bool execute_option_if( int registered_id, bool force = false );
 
       /*
-       * Returns Option* instance associtated to registered_id
+       * Returns reference to the Option instance associtated to registered_id
        * It throws if no registered_id has been added to map
        */
-      //Option * option_ptr( int registered_id ) const;
 
       template< typename T = Option>
       const T & option_ref( int registered_id ) const
@@ -167,6 +164,7 @@ namespace ak {
       {
          return const_cast<T&>( static_cast<const ParseOptionsBase*>(this)->option_ref<T>( registered_id ) );
       }
+
 
       template< typename T>
       T option_value( std::string const & op_name ) const

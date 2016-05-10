@@ -136,7 +136,6 @@ namespace ak {
    public:
       option_creator( int id ) 
       {
-	  Factory<Option>::instance().register_item_v2( id, std::unique_ptr<option_creator>( this ) );
       }
 
       virtual ~option_creator() = default;
@@ -153,6 +152,8 @@ namespace ak {
 		option_creator_impl(int id ) 
 		: option_creator( id )
 		{
+	  		Factory<Option>::instance().register_item_v2( id, 
+				std::unique_ptr<option_creator>( new option_creator_impl<T>( *this ) ) );
 		}
 
 		virtual std::unique_ptr< Option > create()
