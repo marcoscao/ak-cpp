@@ -10,8 +10,8 @@ namespace ak {
   namespace gen {
 
    enum GenOptionsIDs {
-      SOURCES_OP_ID = 100,
-      HELP_OP_ID,
+      //SOURCES_OP_ID = 100,
+      //HELP_OP_ID,
       VERBOSE_OP_ID,
       VERSION_OP_ID,
       MEDIA_OP_ID,
@@ -20,13 +20,13 @@ namespace ak {
 
 
    AK_DEFINE_OPTION_WITH_MULTIPLE_VALUES( 
-      SourcesOp, SOURCES_OP_ID, 
+      SourcesOp, 200, //SOURCES_OP_ID, 
       "source-path,s", "source-path",
       "Sets source paths to iterate over. This option can be used multiple times", 
       std::string )
  
    AK_DEFINE_OPTION( 
-      HelpOp, HELP_OP_ID, 
+      HelpOp, 201, //HELP_OP_ID, 
       "help,h", "help", 
       "Shows usage Help and available options" )
 
@@ -51,7 +51,6 @@ namespace ak {
       "chunk-number", "chunk number", 
       "Number of chunk files to process in a group. Default is 50", 
       int, 50 ) 
-
 
 
 } }

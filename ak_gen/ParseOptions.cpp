@@ -85,7 +85,7 @@ namespace ak { namespace gen {
       // in such case show it and exit
       //execute_option_if( VERSION_OP_ID, true );
 
-      if( has_user_entered_option( HELP_OP_ID ) ) {
+      if( has_user_entered_option( HelpOp::ID ) ) { //HELP_OP_ID ) ) {
          HelpCmd cmd;
          cmd.execute( *this );
          return;
@@ -97,7 +97,7 @@ namespace ak { namespace gen {
          return;
       }
 
-      if( has_user_entered_option( SOURCES_OP_ID ) == false ) {
+      if( has_user_entered_option( SourcesOp::ID ) == false ) {
          LOG_CONSOLE("Please run with --help or -h to display correct usage and available options.");
          return;
       }

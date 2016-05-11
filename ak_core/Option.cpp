@@ -7,20 +7,20 @@
 
 namespace ak {
 
-    Option::Option()
-    : registered_id_( 0 )
-    {
-    }
-   
-   int Option::registered_id() const
-    {
-       return registered_id_;
-    }
-   
-    void Option::set_registered_id_( int id )
-    {
-       registered_id_ = id;
-    }
+   //  Option::Option()
+   //  : registered_id_( 0 )
+   //  {
+   //  }
+   //
+   // int Option::registered_id() const
+   //  {
+   //     return registered_id_;
+   //  }
+   //
+   //  void Option::set_registered_id_( int id )
+   //  {
+   //     registered_id_ = id;
+   //  }
    
    // std::string Option::name() 
    // { 

@@ -5,78 +5,82 @@
 #include "Exception.h"
 //#include "Option.h"
 
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
-
 namespace ak {
 
-	template<typename T>
-	class factory_item_creator : public factory_item_creator_base {
-	public:
-	   factory_item_creator() = default;
-	   
-	   std::unique_ptr< factory_item > operator()()
-	   {
-		   return std::make_unique<T>();
-	   }
-	};
+   template<typename T>
+   class factory_item_creator : public factory_item_creator_base {
+   public:
+      factory_item_creator() = default;
+        
+      std::unique_ptr< factory_item_base > operator()()
+      {
+         return std::make_unique<T>();
+      }
+   };
 		
 
-	template<typename T >
-	class factory : public factory_base {
-	public:
-	   void register_item( int id, std::unique_ptr< factory_item_creator_base > i_creator ) override
-	   {
-			auto it = registered_.find( id );
+   template<typename T >
+   class factory : public factory_base {
+   public:
+      void register_item( int id, std::unique_ptr< factory_item_creator_base > i_creator ) override
+      {
+         std::cout << "registering item id: " << id << std::endl;
 
-			if( it != registered_.end() )
-				throw ak_exception( "factory: register_item ->  id: " + std::to_string( id ) + " previously registered" );
+         auto it = registered_.find( id );
 
-			std::pair< typename Reg_Ct::iterator, bool> p = registered_.insert( typename Reg_Ct::value_type( id, std::move( i_creator ) ) );
-			if( p.second == false )
-				throw ak_exception( "factory: register_item-> Something wrong trying to register option id: " + std::to_string(id) );
-	   }
+	 if( it != registered_.end() )
+	    throw ak_exception( "factory: register_item ->  id: " + std::to_string( id ) + " previously registered" );
 
-	   std::shared_ptr< factory_item > create_item( int id ) override
-	   {
-			auto it = registered_.find( id );
+	 std::pair< typename Reg_Ct::iterator, bool> p = registered_.insert( typename Reg_Ct::value_type( id, std::move( i_creator ) ) );
+	 if( p.second == false )
+	    throw ak_exception( "factory: register_item-> Something wrong trying to register option id: " + std::to_string(id) );
+      }
 
-			if( it == registered_.end() )
-				throw ak_exception( "factory: create_item->  id: " + std::to_string(id) + " not yet registered" );
+      std::shared_ptr< factory_item_base > create_item( int id ) override
+      {
+         auto it = registered_.find( id );
 
-			std::shared_ptr< factory_item > sp ( std::move( it->second->operator()() ) );
+         if( it == registered_.end() )
+                 throw ak_exception( "factory: create_item->  id: " + std::to_string(id) + " not yet registered" );
 
-			if( sp == nullptr )
-				throw ak_exception( "factory: something wrong while creating item id: " + std::to_string(id) );
-      
-			instances_.push_back( sp );
-            
-			return sp;
-	   }
+         std::shared_ptr< factory_item_base > sp ( std::move( it->second->operator()() ) );
+         
+         sp->set_registered_id( id );
+
+         if( sp == nullptr )
+                 throw ak_exception( "factory: something wrong while creating item id: " + std::to_string(id) );
+
+         instances_.push_back( sp );
+
+         return sp;
+      }
 	
-	private:
-		using Reg_Ct = std::unordered_map< int, std::unique_ptr< factory_item_creator_base > >;
-		using Ins_Ct = std::vector< std::shared_ptr< factory_item > >;
+      private:
+         using Reg_Ct = std::unordered_map< int, std::unique_ptr< factory_item_creator_base > >;
+	 using Ins_Ct = std::vector< std::shared_ptr< factory_item_base > >;
 
-		Reg_Ct registered_;
-		Ins_Ct instances_;
+	 Reg_Ct registered_;
+	 Ins_Ct instances_;
 
-	public:
-		factory() = default;
-	};
+      public:
+	 factory() = default;
+   };
 
 
 
-	class Option;
-	//class Command;
+   class Option;
+   //class Command;
 
-	using options_factory = factory< Option >;
-	//using commands_factory = factory< Command, command_creator >;
+   using options_factory = factory< Option >;
+   //using commands_factory = factory< Command, command_creator >;
 
-	options_factory & get_options_factory();
-	//commands_factory & get_commands_factory();
+   options_factory & get_options_factory();
+   //commands_factory & get_commands_factory();
 
 }
 

@@ -14,16 +14,20 @@ namespace ak {
    class Visitor;
 
 
-class Option  : public factory_item {
-   template<typename> friend class Factory;
+class Option  : public factory_item_base {
+   // template<typename> friend class Factory;
 
 protected:
-   Option( );
+
+   Option( )
+   {
+   }
+
 
 public:
    virtual ~Option() = default;
 
-   int registered_id() const;
+   // int registered_id() const;
 
    //! "verbose,v"  
    virtual std::string cmdline_id() const = 0;
@@ -40,11 +44,12 @@ public:
 
    virtual void accept( Visitor & ) = 0;
 
+// protected:
+  // void set_registered_id_( int id );
 
-private:
-  int registered_id_;
+// private:
+  // int registered_id_;
 
-  void set_registered_id_( int id );
 };
 
 

@@ -17,22 +17,31 @@
 /*
  * submacro: Starting Common option class code
  */
-#define __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+#define __AK_START_DEFINE_OPTION_CLASS__( a_ID, CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
 class CLASS_NAME : public Option { \
-    template<typename> friend class factory; \
+   template<typename> friend class factory; \
    friend std::unique_ptr<CLASS_NAME> std::make_unique<CLASS_NAME>(); \
+   \
 public: \
    \
-   /*static const int REGISTERED_ID = ID;*/ \
+   static const int ID = a_ID; \
+   static bool is_registered; \
    /*static std::unique_ptr<Option> create() { return std::make_unique<CLASS_NAME>(); } */  \
-   virtual std::string cmdline_id() const { return CMDLINE_ID; } \
-   virtual std::string name() const { return NAME; } \
-   virtual std::string description() const { return DESC; } \
+   std::string cmdline_id() const override { return CMDLINE_ID; } \
+   std::string name() const override { return NAME; } \
+   std::string description() const override { return DESC; } \
    /*virtual void execute( ParseOptionsBase const & pob ) { ; } */  \
-   virtual void accept( Visitor & v ) { v.visit( *this ); } \
+   void accept( Visitor & v ) override { v.visit( *this ); } \
    \
-private:\
-   static option_creator_impl< CLASS_NAME > creator_;
+private: \
+   static bool register_option() \
+   { \
+      get_options_factory().register_item( CLASS_NAME::ID, \
+            std::make_unique< factory_item_creator<CLASS_NAME> >() ); \
+      return true; \
+   }
+//private:\
+   //static option_creator_impl< CLASS_NAME > creator_;
 
    
 
@@ -42,7 +51,7 @@ private:\
 #define __AK_END_DEFINE_OPTION_CLASS__( CLASS_NAME ) \
 private: \
    /*CLASS_NAME() { set_registered_id( ID ); }*/ \
-   CLASS_NAME() { ; } \
+   CLASS_NAME() { ; }\
 };
 
 
@@ -63,9 +72,16 @@ private: \
 /*
  * submacro: register option
  */
-#define __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID ) \
-option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLASS_NAME>( ID ); \
+#define __AK_REGISTER_OPTION_CLASS__( CLASS_NAME ) \
+   bool CLASS_NAME::is_registered = CLASS_NAME::register_option();
+
+//option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLASS_NAME>( ID ); \
 // Factory<Option>::instance().register_item< CLASS_NAME >( ID ); 
+
+
+//#define AK_REGISTER_OPTION_CLASS( CLASS_NAME ) \
+//   get_options_factory().register_item( CLASS_NAME::REGISTERED_ID, \
+//         std::make_unique< factory_item_creator<CLASS_NAME> >() ); } \
 
 
 
@@ -79,7 +95,7 @@ option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLAS
  * Final Macro: defines an Option Class without vars
  */
 #define AK_DEFINE_OPTION( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC ) \
-   __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+   __AK_START_DEFINE_OPTION_CLASS__( ID, CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    __AK_END_DEFINE_OPTION_CLASS__( CLASS_NAME ) \
    //__AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID )
 
@@ -88,14 +104,14 @@ option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLAS
  * Final Macro: defines an Option class with the storage of a unique value
  */
 #define AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE, VAR_DEFAULT ) \
-   __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+   __AK_START_DEFINE_OPTION_CLASS__( ID, CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    public: \
       \
       using VALUE_TYPE = VAR_TYPE; \
       using STORAGE_DATA = VALUE_TYPE; \
       /*using STORAGE_FN = ParseOptionsBase::set_unique< VALUE_TYPE >; */\
       \
-      virtual ParseOptionsBase::StorageType * storage_type() \
+      virtual ParseOptionsBase::StorageType * storage_type() override \
       { \
          return ParseOptionsBase::set_unique< VALUE_TYPE >( &storage_data_, VAR_DEFAULT ); \
       } \
@@ -108,14 +124,14 @@ option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLAS
  * Final Macro: defines an Option with multiple values
  */
 #define AK_DEFINE_OPTION_WITH_MULTIPLE_VALUES( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE ) \
-   __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+   __AK_START_DEFINE_OPTION_CLASS__( ID, CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    public: \
    \
       using VALUE_TYPE = VAR_TYPE; \
       using STORAGE_DATA = std::vector< VALUE_TYPE >; \
       /*using STORAGE_FN = ParseOptionsBase::set_multiple< VALUE_TYPE >;*/ \
       \
-      virtual ParseOptionsBase::StorageType * storage_type() \
+      virtual ParseOptionsBase::StorageType * storage_type() override \
       { \
          return ParseOptionsBase::set_multiple< VALUE_TYPE >( &storage_data_ ); \
       } \
@@ -128,14 +144,14 @@ option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLAS
  * Final Macro: defines an Option with multiple values
  */
 #define AK_DEFINE_REQUIRED_OPTION_WITH_MULTIPLE_VALUES( CLASS_NAME, ID, CMDLINE_ID, NAME, DESC, VAR_TYPE ) \
-   __AK_START_DEFINE_OPTION_CLASS__( CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
+   __AK_START_DEFINE_OPTION_CLASS__( ID, CLASS_NAME, CMDLINE_ID, NAME, DESC ) \
    public: \
    \
       using VALUE_TYPE = VAR_TYPE; \
       using STORAGE_DATA = std::vector< VALUE_TYPE >; \
       /*using STORAGE_FN = ParseOptionsBase::set_multiple< VALUE_TYPE >;*/ \
       \
-      virtual ParseOptionsBase::StorageType * storage_type() \
+      virtual ParseOptionsBase::StorageType * storage_type() override \
       { \
          return ParseOptionsBase::set_multiple_required< VALUE_TYPE >( &storage_data_ ); \
       } \
