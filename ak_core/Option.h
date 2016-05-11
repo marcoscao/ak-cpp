@@ -3,6 +3,8 @@
 
 #include "ParseOptionsBase.h"
 
+#include "factory_base.h"
+
 #include <memory>
 #include <string>
 
@@ -12,7 +14,7 @@ namespace ak {
    class Visitor;
 
 
-class Option {
+class Option  : public factory_item {
    template<typename> friend class Factory;
 
 protected:

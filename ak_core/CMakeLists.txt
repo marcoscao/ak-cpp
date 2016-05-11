@@ -4,6 +4,7 @@ set( SOURCES
    AppManager.cpp
    Command.cpp
    Exception.cpp
+	Factory.cpp
    FileSystem.cpp
    Option.cpp
    ParseOptionsBase.cpp

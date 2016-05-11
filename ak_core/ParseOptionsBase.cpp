@@ -1,4 +1,5 @@
 #include "ParseOptionsBase.h"
+#include "factory_base.h"
 #include "Exception.h"
 #include "LogSystem.h"
 #include "Option.h"

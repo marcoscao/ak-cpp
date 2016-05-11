@@ -32,7 +32,7 @@ public: \
    virtual void accept( Visitor & v ) { v.visit( *this ); } \
    \
 private:\
-   static const option_creator_impl< CLASS_NAME > creator_;
+   static option_creator_impl< CLASS_NAME > creator_;
 
    
 
@@ -64,7 +64,7 @@ private: \
  * submacro: register option
  */
 #define __AK_REGISTER_OPTION_CLASS__( CLASS_NAME, ID ) \
-const option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLASS_NAME>( ID ); \
+option_creator_impl< CLASS_NAME > CLASS_NAME::creator_= option_creator_impl<CLASS_NAME>( ID ); \
 // Factory<Option>::instance().register_item< CLASS_NAME >( ID ); 
 
 
