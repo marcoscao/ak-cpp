@@ -36,9 +36,11 @@ namespace ak {
 	 if( it != registered_.end() )
 	    throw ak_exception( "factory: register_item ->  id: " + std::to_string( id ) + " previously registered" );
 
-	 std::pair< typename Reg_Ct::iterator, bool> p = registered_.insert( typename Reg_Ct::value_type( id, std::move( i_creator ) ) );
+	 std::pair< typename Reg_Ct::iterator, bool> p = 
+            registered_.insert( typename Reg_Ct::value_type( id, std::move( i_creator ) ) );
 	 if( p.second == false )
-	    throw ak_exception( "factory: register_item-> Something wrong trying to register option id: " + std::to_string(id) );
+	    throw ak_exception( "factory: register_item-> Something wrong trying to register option id: " 
+                  + std::to_string(id) );
       }
 
       std::shared_ptr< factory_item_base > create_item( int id ) override
