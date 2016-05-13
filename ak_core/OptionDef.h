@@ -14,6 +14,58 @@
  */
 
 
+
+//using OptionStorageType = boost::value_semanticssss;
+//
+//
+//class base_class = Option
+//
+//template<typename base_class, int ID>
+//class t_option : public base_class {
+//   static const int ID = a_ID; \
+//   static bool is_registered; \
+//   std::string cmdline_id() const override { return CMDLINE_ID; } \
+//   std::string name() const override { return NAME; } \
+//   std::string description() const override { return DESC; } \
+//   /*virtual void execute( ParseOptionsBase const & pob ) { ; } */  \
+//   void accept( Visitor & v ) override { v.visit( *this ); } \
+//   \
+//private: \
+//   static bool register_option() \
+//   { \
+//      get_options_factory().register_item( CLASS_NAME::ID, \
+//            std::make_unique< factory_item_creator<CLASS_NAME> >() ); \
+//      return true; \
+//   }
+//	static const int id = ID;
+//	std::string cmdline_id();
+//	std::string name();
+//	ak::OptionStorageType storage_type();
+//};
+//
+//
+//#define __AK_T_OPTION_METHOD_CMDLINE__( STR ) \
+//	std::string cmdline_id() override { return STR; }
+//
+//#define __AK_
+//
+//
+//
+//using SourcesOp = t_option< Option, 200 >;
+//
+//
+//#define __jj_declare_op_class( ID, CLASS_NAME)\
+//	using CLASS_NAME = t_option< Option, ID >;
+//
+//#define __jj_define_op_class( CLASS_NAME ) \
+//
+//
+//
+//
+
+
+
+
 /*
  * submacro: Starting Common option class code
  */

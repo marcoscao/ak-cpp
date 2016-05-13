@@ -9,15 +9,6 @@ namespace ak {
 
   namespace gen {
 
-   enum GenOptionsIDs {
-      //SOURCES_OP_ID = 100,
-      //HELP_OP_ID,
-      VERBOSE_OP_ID,
-      VERSION_OP_ID,
-      MEDIA_OP_ID,
-      CHUNK_NUMBER_OP_ID
-   };
-
 
    AK_DEFINE_OPTION_WITH_MULTIPLE_VALUES( 
       SourcesOp, 200, //SOURCES_OP_ID, 
@@ -31,23 +22,23 @@ namespace ak {
       "Shows usage Help and available options" )
 
    AK_DEFINE_OPTION( 
-      VerboseOp, VERBOSE_OP_ID, 
+      VerboseOp, 202, 
       "verbose", "verbose", 
       "Activate Verbose mode" ) 
 
    AK_DEFINE_OPTION( 
-      VersionOp, VERSION_OP_ID, 
+      VersionOp, 203, 
       "version,v", "version", 
       "Show current version info" ) 
 
    AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( 
-      MediaOp, MEDIA_OP_ID, 
+      MediaOp, 204, 
       "media", "media", 
       "Media to search for", 
       std::string, "audio" ) 
 
    AK_DEFINE_OPTION_WITH_UNIQUE_VALUE( 
-      ChunkNumberOp, CHUNK_NUMBER_OP_ID, 
+      ChunkNumberOp, 205, 
       "chunk-number", "chunk number", 
       "Number of chunk files to process in a group. Default is 50", 
       int, 50 ) 

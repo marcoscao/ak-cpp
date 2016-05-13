@@ -32,7 +32,11 @@ namespace ak {
 
    class factory_base {
    public:
+	   /*
+	    * register item with passed id
+	   */
 	   virtual void register_item( int id, std::unique_ptr< factory_item_creator_base > ) = 0;
+
 	   virtual std::shared_ptr< factory_item_base > create_item( int id ) = 0;
 
    protected:

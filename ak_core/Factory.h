@@ -29,7 +29,7 @@ namespace ak {
    public:
       void register_item( int id, std::unique_ptr< factory_item_creator_base > i_creator ) override
       {
-         std::cout << "registering item id: " << id << std::endl;
+         //std::cout << "registering item id: " << id << std::endl;
 
          auto it = registered_.find( id );
 
