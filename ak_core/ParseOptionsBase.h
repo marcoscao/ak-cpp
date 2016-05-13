@@ -1,9 +1,10 @@
 #ifndef AK_CORE_PARSE_OPTIONS_BASE__
 #define AK_CORE_PARSE_OPTIONS_BASE__
 
+#include "ak.h"
 #include "Exception.h"
 
-#include <boost/program_options.hpp>
+//#include <boost/program_options.hpp>
 
 #include <functional>
 #include <map>
@@ -24,7 +25,8 @@ namespace ak {
    class ParseOptionsBase {
    public:
 
-      using StorageType = boost::program_options::value_semantic;
+      //using StorageType = boost::program_options::value_semantic;
+      using StorageType = ak::OptionStorageType;
       using OptionsList = std::vector< std::shared_ptr< Option > >;
 
 
